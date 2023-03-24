@@ -1,0 +1,13 @@
+package com.Chabiba_Support.Chabiba_Support;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class ChabibaSupportApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ChabibaSupportApplication.class, args);
+	}
+
+}
