@@ -15,9 +15,9 @@ import java.util.Optional;
 @Repository
 @Transactional
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
-    void deleteEmployeeById(Long idPersonne);
-    Optional<Employee> findEmployeeById(Long idPersonne);
-    Employee findEmployeeByEmail(String email);
+
+    Optional<Employee> findEmployeeByIdPersonne(Long idPersonne);
+
     @Query("SELECT e FROM Employee e WHERE e.employeeRole = :role")
     List<Employee> findEmployeeByRole(@Param("role") EmployeeRole role);
 

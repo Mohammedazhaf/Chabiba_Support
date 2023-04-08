@@ -31,30 +31,24 @@ public class EmployeeService {
     }
 
     //supprimer un utilisateur
-    public void deleteEmployee(Long id){
-        employeeRepository.deleteEmployeeById(id);
+    public void deleteEmployee(Employee employee) {
+        employeeRepository.delete(employee);
     }
 
-    public Employee findEmployeeById(Long idPersonne) {
-        return employeeRepository.findEmployeeById(idPersonne).orElseThrow(() -> new EmployeeNotFoundException("Employee by id " + idPersonne + " was not found"));
+    public Employee findEmployeeByIdPersonne(Long idPersonne) {
+        return employeeRepository.findEmployeeByIdPersonne(idPersonne).orElseThrow(() -> new EmployeeNotFoundException("Employee by id " + idPersonne + " was not found"));
     }
 
     public List<Employee> findByNomLikeIgnoreCase(String nom) {
         return employeeRepository.findByNomLikeIgnoreCase(nom);
     }
 
-    public Employee updateEmployee(Long idPersonne, String nom, String prenom, String numTel, String email,  String cin) {
-        Employee employee = employeeRepository.findEmployeeById(idPersonne).orElse(null);
-        if (employee == null) {
-            return null;
-        }
-        employee.setNom(nom);
-        employee.setPrenom(prenom);
-        employee.setNumTel(numTel);
-        employee.setEmail(email);
-        employee.setCin(cin);
-
+    public Employee updateEmployee(Employee employee) {
         return employeeRepository.save(employee);
+    }
+
+    public long countAllEmployees() {
+        return employeeRepository.count();
     }
 
     public Boolean CheckIfRoleExists(String role) {
@@ -68,9 +62,7 @@ public class EmployeeService {
 
 
 
-    public Employee findEmployeeByEmail(String email) {
-        return employeeRepository.findEmployeeByEmail(email);
-    }
+
 
 
 

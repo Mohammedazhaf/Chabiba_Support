@@ -2,6 +2,7 @@ package com.Chabiba_Support.Chabiba_Support.services;
 
 import com.Chabiba_Support.Chabiba_Support.exception.ClientNotFoundException;
 import com.Chabiba_Support.Chabiba_Support.models.Client;
+
 import com.Chabiba_Support.Chabiba_Support.repositories.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,25 +29,23 @@ public class ClientService {
     }
 
     //supprimer un client
-    public void deleteClient(Long idPersonne){
-        clientRepository.deleteClientById(idPersonne);
+    public void deleteClient(Client client) {
+        clientRepository.delete(client);
     }
 
-    public Client findClientById(Long idPersonne) {
-        return clientRepository.findClientById(idPersonne).orElseThrow(() -> new ClientNotFoundException("Client by id " + idPersonne + " was not found"));
+    public Client findClientByIdPersonne(Long idPersonne) {
+        return clientRepository.findClientByIdPersonne(idPersonne).orElseThrow(() -> new ClientNotFoundException("Client by id " + idPersonne + " was not found"));
     }
 
-    public Client updateClient(Long idPersonne, String nom, String prenom, String numTel, String email,  String nomEntreprise) {
-        Client client = clientRepository.findClientById(idPersonne).orElse(null);
-        if (client == null) {
-            return null;
-        }
-        client.setNom(nom);
-        client.setPrenom(prenom);
-        client.setNumTel(numTel);
-        client.setEmail(email);
-        client.setNomEntreprise(nomEntreprise);
+    public List<Client> findByNomLikeIgnoreCase(String nom) {
+        return clientRepository.findByNomLikeIgnoreCase(nom);
+    }
 
+    public long countAllClients() {
+        return clientRepository.count();
+    }
+
+    public Client updateClient(Client client) {
         return clientRepository.save(client);
     }
 
