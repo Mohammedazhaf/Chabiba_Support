@@ -2,7 +2,6 @@ package com.Chabiba_Support.Chabiba_Support.services;
 
 import com.Chabiba_Support.Chabiba_Support.exception.ClientNotFoundException;
 import com.Chabiba_Support.Chabiba_Support.models.Client;
-
 import com.Chabiba_Support.Chabiba_Support.repositories.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -2,7 +2,7 @@ package com.Chabiba_Support.Chabiba_Support.repositories;
 
 
 import com.Chabiba_Support.Chabiba_Support.models.Employee;
-import com.Chabiba_Support.Chabiba_Support.models.EmployeeRole;
+import com.Chabiba_Support.Chabiba_Support.models.Role;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,8 +18,10 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     Optional<Employee> findEmployeeByIdPersonne(Long idPersonne);
 
-    @Query("SELECT e FROM Employee e WHERE e.employeeRole = :role")
-    List<Employee> findEmployeeByRole(@Param("role") EmployeeRole role);
+
+
+    @Query("SELECT e FROM Employee e WHERE e.role = :role")
+    List<Employee> findEmployeeByRole(@Param("role") Role role);
 
     @Query("SELECT e FROM Employee e WHERE LOWER(e.nom) LIKE CONCAT('%', LOWER(:nom), '%')")
     List<Employee> findByNomLikeIgnoreCase(@Param("nom") String nom);

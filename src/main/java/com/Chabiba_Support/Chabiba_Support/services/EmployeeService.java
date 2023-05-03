@@ -2,7 +2,7 @@ package com.Chabiba_Support.Chabiba_Support.services;
 
 import com.Chabiba_Support.Chabiba_Support.exception.EmployeeNotFoundException;
 import com.Chabiba_Support.Chabiba_Support.models.Employee;
-import com.Chabiba_Support.Chabiba_Support.models.EmployeeRole;
+import com.Chabiba_Support.Chabiba_Support.models.Role;
 import com.Chabiba_Support.Chabiba_Support.repositories.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,13 +52,15 @@ public class EmployeeService {
     }
 
     public Boolean CheckIfRoleExists(String role) {
-        EmployeeRole employeeRole = EmployeeRole.valueOf(role);
+        Role employeeRole = Role.valueOf(role);
         List<Employee> ListEmployee  = employeeRepository.findEmployeeByRole(employeeRole);
         if (ListEmployee.size()>0)
             return true;
         else
             return false;
     }
+
+
 
 
 
