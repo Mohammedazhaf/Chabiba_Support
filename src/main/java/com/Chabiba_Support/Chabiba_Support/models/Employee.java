@@ -26,6 +26,7 @@ import jakarta.persistence.*;
         }
 
         public void setCin(String cin) {
+<<<<<<< Updated upstream
             this.cin = cin;
         }
 
@@ -37,5 +38,10 @@ import jakarta.persistence.*;
             this.employeeRole = employeeRole;
         }
     }
+=======
+			this.cin = cin;
+		}
+}
+>>>>>>> Stashed changes
 
 

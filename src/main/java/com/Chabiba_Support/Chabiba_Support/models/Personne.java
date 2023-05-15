@@ -17,14 +17,27 @@ public abstract class Personne {
     @Column(name ="mot_de_passe")
     private String motDePasse;
 
+<<<<<<< Updated upstream
     public Personne(String nom, String prenom, String numTel, String email, String motDePasse) {
         this.nom = nom;
+=======
+
+    public Personne(String nom, String prenom, String numTel, String email, String motDePasse,Role role) {
+		this.nom = nom;
+>>>>>>> Stashed changes
         this.prenom = prenom;
         this.numTel = numTel;
         this.email = email;
         this.motDePasse = motDePasse;
     }
-
+	public Personne(Personne personne){
+		this.nom = personne.nom;
+		this.prenom = personne.prenom;
+		this.numTel = personne.numTel;
+		this.email = personne.email;
+		this.motDePasse = personne.motDePasse;
+		this.role=personne.role;
+	}
     public Personne() {
 
     }
@@ -76,4 +89,50 @@ public abstract class Personne {
     public void setMotDePasse(String motDePasse) {
         this.motDePasse = motDePasse;
     }
+<<<<<<< Updated upstream
+=======
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+    @Override
+    public String getPassword() {
+        return motDePasse;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+
+>>>>>>> Stashed changes
 }
