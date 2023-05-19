@@ -4,10 +4,11 @@ import jakarta.persistence.*;
 
 import java.io.File;
 import java.io.Serializable;
+import java.sql.Date;
 
 @Entity
+public class Demande  implements Serializable {
 
-public class Demande implements Serializable{
     @Id
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
@@ -15,12 +16,19 @@ public class Demande implements Serializable{
     private Long idDemande;
     @Column(nullable = false)
     private boolean reponse;
+    @Column(nullable = false)
+    private Date date;
+    @Column(nullable = false)
+    private String titre;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Etat etat;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Service service;
+
+    @Column(nullable = false)
+    private String budget;
     @Column(nullable = false, length = 40)
     private String  message;
     @Column(nullable = false)
@@ -54,6 +62,30 @@ public class Demande implements Serializable{
 
     public Etat getEtat() {
         return etat;
+    }
+
+    public String getTitre() {
+        return titre;
+    }
+
+    public void setTitre(String titre) {
+        this.titre = titre;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getBudget() {
+        return budget;
+    }
+
+    public void setBudget(String budget) {
+        this.budget = budget;
     }
 
     public void setEtat(Etat etat) {
