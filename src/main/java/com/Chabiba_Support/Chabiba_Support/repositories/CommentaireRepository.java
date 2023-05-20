@@ -7,13 +7,14 @@ import java.util.List;
 
 public interface CommentaireRepository  extends JpaRepository<Commentaire, Long> {
 
-    List<Commentaire> findByDemandeIdPersonne(Long idDemande);
+    List<Commentaire> findByIdDemande(Long idDemande);
 
     List<Commentaire> findByEtoile(int etoile);
 
-    List<Commentaire> findByClienrIdPersonne(Long idClient);
+    List<Commentaire> findByIdPersonne(Long idPersonne);
 
     Commentaire save(Commentaire commentaire);
+
 
     void delete(Commentaire commentaire);
 

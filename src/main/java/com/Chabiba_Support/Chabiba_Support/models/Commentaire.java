@@ -27,9 +27,10 @@ import java.io.Serializable;
         @JoinColumn(
                 name = "idPersonne"
         )
-        public Personne personne;
+        public Client client;
         @OneToOne
         @JoinColumn(
+
                 name = "idDemande"
         )
         public Demande demande;
@@ -60,12 +61,12 @@ import java.io.Serializable;
             this.texteC = texte;
         }
 
-        public Personne getPersonne() {
-            return personne;
+        public Client getClient() {
+            return client;
         }
 
-        public void setPersonne(Personne personne) {
-            this.personne = personne;
+        public void setClient(Client client) {
+            this.client = client;
         }
 
         public Demande getDemande() {

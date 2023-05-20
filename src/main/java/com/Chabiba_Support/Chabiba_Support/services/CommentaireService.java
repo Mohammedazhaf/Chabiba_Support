@@ -36,7 +36,7 @@ public class CommentaireService {
 
         commentaire.setEtoile(commentaireDetails.getEtoile());
         commentaire.setTexteC(commentaireDetails.getTexteC());
-        commentaire.setPersonne(commentaireDetails.getPersonne());
+        commentaire.setClient(commentaireDetails.getClient());
         commentaire.setDemande(commentaireDetails.getDemande());
 
         Commentaire updatedCommentaire = commentaireRepository.save(commentaire);
