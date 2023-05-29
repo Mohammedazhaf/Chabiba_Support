@@ -1,5 +1,6 @@
 package com.Chabiba_Support.Chabiba_Support.services;
 
+
 import com.Chabiba_Support.Chabiba_Support.exception.CommentaireNotFoundException;
 import com.Chabiba_Support.Chabiba_Support.models.Commentaire;
 import com.Chabiba_Support.Chabiba_Support.repositories.CommentaireRepository;
@@ -11,43 +12,42 @@ import java.util.List;
 @Service
 public class CommentaireService {
     @Autowired
-    private CommentaireRepository commentaireRepository;
-
+    private CommentaireRepository commentaireRepo;
 
     public List<Commentaire> getAllCommentaires() {
-        return commentaireRepository.findAll();
+        return commentaireRepo.findAll();
     }
 
 
     public Commentaire getCommentaireById(Long id) {
-        return commentaireRepository.findById(id)
+        return commentaireRepo.findById(id)
                 .orElseThrow(() -> new CommentaireNotFoundException("Commentaire introuvable avec l'ID : " + id));
     }
 
 
     public Commentaire createCommentaire(Commentaire commentaire) {
-        return commentaireRepository.save(commentaire);
+        return commentaireRepo.save(commentaire);
     }
 
 
     public Commentaire updateCommentaire(Long id, Commentaire commentaireDetails) {
-        Commentaire commentaire = commentaireRepository.findById(id)
+        Commentaire commentaire = commentaireRepo.findById(id)
                 .orElseThrow(() -> new CommentaireNotFoundException("Commentaire introuvable avec l'ID : " + id));
 
         commentaire.setEtoile(commentaireDetails.getEtoile());
         commentaire.setTexteC(commentaireDetails.getTexteC());
-        commentaire.setClient(commentaireDetails.getClient());
+        commentaire.setPersonne(commentaireDetails.getPersonne());
         commentaire.setDemande(commentaireDetails.getDemande());
 
-        Commentaire updatedCommentaire = commentaireRepository.save(commentaire);
+        Commentaire updatedCommentaire = commentaireRepo.save(commentaire);
         return updatedCommentaire;
     }
 
 
     public void deleteCommentaire(Long id) {
-        Commentaire commentaire = commentaireRepository.findById(id)
+        Commentaire commentaire = commentaireRepo.findById(id)
                 .orElseThrow(() -> new CommentaireNotFoundException("Commentaire introuvable avec l'ID : " + id));
 
-                   commentaireRepository.delete(commentaire);
+        commentaireRepo.delete(commentaire);
     }
 }
