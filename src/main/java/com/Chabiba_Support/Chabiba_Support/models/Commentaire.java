@@ -25,12 +25,12 @@ public class Commentaire implements Serializable {
     private String texteC;
     @ManyToOne
     @JoinColumn(
-            name = "idPersonne"
+            name = "id_personne"
     )
     public Personne personne;
     @OneToOne
     @JoinColumn(
-            name = "idDemande"
+            name = "id_demande"
     )
     public Demande demande;
 

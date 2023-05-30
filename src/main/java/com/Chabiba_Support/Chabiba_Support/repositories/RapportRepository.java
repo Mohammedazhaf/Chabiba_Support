@@ -14,7 +14,7 @@ public interface RapportRepository extends JpaRepository<Rapport, Long> {
     List<Rapport> findAll();
     Optional<Rapport> findByIdRapport(Long rapportId);
 
-    List<Rapport> findRapportByIdPersonne(Long idPersonne);
+
 
     List<Rapport> findByDemande(Demande demande);
 

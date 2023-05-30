@@ -8,11 +8,11 @@ import java.util.List;
 
 
 public interface CommentaireRepository extends JpaRepository<Commentaire, Long> {
-    List<Commentaire> findByDemandeId(Long idDemande);
+
 
     List<Commentaire> findByEtoile(int etoile);
 
-    List<Commentaire> findByClienrId(Long idClient);
+
 
     Commentaire save(Commentaire commentaire);
 

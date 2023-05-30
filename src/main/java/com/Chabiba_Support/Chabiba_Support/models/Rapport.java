@@ -30,13 +30,13 @@ public class Rapport implements Serializable {
 
     @ManyToOne
     @JoinColumn(
-            name = "idPersonne"
+            name = "id_personne"
     )
     public Employee employee;
 
     @ManyToOne
     @JoinColumn(
-            name = "idDemande"
+            name = "id_demande"
     )
     public Demande demande;
 
