@@ -1,7 +1,6 @@
 package com.Chabiba_Support.Chabiba_Support.models;
-import jakarta.persistence.Entity;
-import jakarta.persistence.*;
 
+import javax.persistence.*;
 import java.io.File;
 import java.io.Serializable;
 import java.sql.Date;

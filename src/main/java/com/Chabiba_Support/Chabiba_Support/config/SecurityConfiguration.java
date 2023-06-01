@@ -25,7 +25,9 @@ public class SecurityConfiguration {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/example-url") // Ajoutez cette ligne pour autoriser l'URL spécifique sans authentification
+                .antMatchers("/swagger-ui/**") // Ajoutez cette ligne pour autoriser l'URL spécifique sans authentification
+                .permitAll()
+                .antMatchers("/client/all") // Ajoutez cette ligne pour autoriser l'URL spécifique sans authentification
                 .permitAll()
                 .anyRequest()
                 .authenticated()
