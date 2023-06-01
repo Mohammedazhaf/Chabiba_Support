@@ -24,8 +24,8 @@ public class SecurityConfiguration {
         http
                 .csrf()
                 .disable()
-                .authorizeHttpRequests()
-                .requestMatchers("/auth/**")
+                .authorizeRequests()
+                .antMatchers("/example-url") // Ajoutez cette ligne pour autoriser l'URL spécifique sans authentification
                 .permitAll()
                 .anyRequest()
                 .authenticated()

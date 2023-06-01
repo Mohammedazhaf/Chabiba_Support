@@ -27,7 +27,7 @@ public class AuthenticationService {
                 .numTel(request.getNumTel())
                 .email(request.getEmail())
                 .motDePasse(passwordEncoder.encode(request.getMotDePasse()))
-                .role(Role.client)
+                .role(Role.Responsable)
                 .build();
             repository.save(personne);
 
