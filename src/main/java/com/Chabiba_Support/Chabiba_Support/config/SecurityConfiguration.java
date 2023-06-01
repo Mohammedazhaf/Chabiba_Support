@@ -25,10 +25,11 @@ public class SecurityConfiguration {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/swagger-ui/**") // Ajoutez cette ligne pour autoriser l'URL spécifique sans authentification
-                .permitAll()
-                .antMatchers("/client/all") // Ajoutez cette ligne pour autoriser l'URL spécifique sans authentification
-                .permitAll()
+                .antMatchers("/auth/**").permitAll()
+                .antMatchers("/v2/api-docs/**").permitAll()
+                .antMatchers("/v3/api-docs/**").permitAll()
+                .antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers("/swagger-ui/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
