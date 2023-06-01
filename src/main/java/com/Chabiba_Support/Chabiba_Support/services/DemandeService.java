@@ -13,6 +13,10 @@ public class DemandeService {
     public DemandeService(){
     }
 
+    public DemandeService(DemandeRepository demandeRepository) {
+        this.demandeRepository = demandeRepository;
+    }
+
     //afficher tous les demandes envoyer
     public List<Demande> findAll(){
         return this.demandeRepository.findAll();

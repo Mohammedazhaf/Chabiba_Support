@@ -36,6 +36,10 @@ public class Commentaire implements Serializable {
     public Commentaire(){
 
     }
+
+    public Commentaire(long l, String s) {
+    }
+
     public void setIdCommentaire(Long idCommentaire) {
         this.idCommentaire = idCommentaire;
     }

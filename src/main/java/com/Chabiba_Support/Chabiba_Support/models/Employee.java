@@ -28,7 +28,10 @@ import javax.persistence.Table;
             this.cin = cin;
         }
 
-        public String getCin() {
+    public Employee(String johnDoe) {
+    }
+
+    public String getCin() {
             return cin;
         }
 
