@@ -121,4 +121,8 @@ public class Demande  implements Serializable {
     public void setType(Type type) {
         this.type = type;
     }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
 }

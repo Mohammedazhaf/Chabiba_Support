@@ -43,6 +43,14 @@ public class Rapport implements Serializable {
     @Column(nullable = false)
     private File documentR;
 
+    public Rapport(long idRapport, String s){
+
+    }
+
+    public Rapport() {
+
+    }
+
     public Long getIdRapport() {
         return idRapport;
     }
