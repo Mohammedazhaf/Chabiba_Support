@@ -1,40 +1,78 @@
-version: '3.7'
+#version: '3'
+#
+#services:
+#  mysqldb:
+#    container_name: mysqldb
+#    image: mysql:latest
+#    networks:
+#      - jwtbd-network
+#    environment:
+#      - MYSQL_DATABASE=chabiba_support
+#      - MYSQL_PASSWORD=root
+#      - MYSQL_ROOT_PASSWORD=root
+#    volumes:
+#      - mysqldb:/var/lib/mysql
+#    restart: always
+#    ports:
+#      - 3307:3306
+#  chabiba_support:
+#    container_name: chabiba_support
+#    image: image_spring
+##    build:
+##      context: ./
+##      dockerfile: Dockerfile
+#    ports:
+#      - 8080:8080
+#    networks:
+#      - jwtbd-network
+#    depends_on:
+#      - mysqldb
+#    environment:
+#      - MYSQL_HOST=mysqldb
+#      - MYSQL_USERNAME=root
+#      - MYSQL_PASSWORD=root
+#      - MYSQL_PORT=3306
+#networks:
+#  jwtbd-network:
+#    name: jwtbd-network
+#volumes:
+#  mysqldb:
+version: '3'
 
-# Define services
 services:
-  # App backend service
-  spring-boot-app:
-    image: spring-boot-app
-    ports:
-      - "8080:8080"
+  mysqldb:
+    container_name: mysqldb
+    image: mysql:latest
+    networks:
+      - jwtbd-network
     environment:
-      - spring.datasource.url=jdbc:mysql://db:3306/chabiba_support
-    depends_on:
-      - db
-
-  #  # Frontend Service
-  #  react-app:
-  #    image: my-app-react
-  #    ports:
-  #      - "3000:3000"
-  #    environment:
-  #      - REACT_APP_PORT=3000
-  #      - REACT_APP_API=8080
-  #    depends_on:
-  #      - spring-boot-app
-
-  # Database Service (Mysql)
-  db:
-    image: mysql
-    restart: always
-    environment:
+      - MYSQL_DATABASE=chabiba_support
+      - MYSQL_PASSWORD=root
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE = root
-    ports:
-      - "3307:3306"
     volumes:
-      - ./data.sql:/docker-entrypoint-initdb.d/data.sql
+      - mysqldb:/var/lib/mysql
+    restart: always
+    ports:
+      - 3307:3306
+
+  chabiba_support:
+    container_name: chabiba_support
+    image: image_spring
+    ports:
+      - 8080:8080
+    networks:
+      - jwtbd-network
+    depends_on:
+      - mysqldb
+    environment:
+      - MYSQL_HOST=mysqldb
+      - MYSQL_USERNAME=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_PORT=3306
+
+networks:
+  jwtbd-network:
+    name: jwtbd-network
+
 volumes:
-  mysql:
-    external : true
-    name : mysql
+  mysqldb:
