@@ -28,6 +28,6 @@ jobs:
       uses: docker/build-push-action@v3
       with:
           context: .
-          file: ./Dockerfile
+          file: ./docker-compose.yaml
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/chabiba:image-spring
