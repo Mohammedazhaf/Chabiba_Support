@@ -31,3 +31,18 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/chabiba:image-spring
+    - name: Build and push 
+      uses: docker/build-push-action@v4
+      with:
+          context: .
+          file: ./docker-compose.yaml
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/chabiba:container
+
+    - name: Set up Docker Compose
+      run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
+    - name: Deploy with Docker Compose
+      run: docker-compose up -d
