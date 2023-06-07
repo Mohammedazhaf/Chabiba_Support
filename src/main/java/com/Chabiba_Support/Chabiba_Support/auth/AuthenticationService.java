@@ -27,7 +27,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     public AuthenticationResponse register(RegisterRequest request) {
         Personne personne1 = new Personne();
-        if(request.getRole().equals(Role.Responsable)){
+        if(request.getRole().equals("Responsable")){
             var personne = Personne.builder()
                     .nom(request.getNom())
                     .prenom(request.getPrenom())
@@ -41,7 +41,7 @@ public class AuthenticationService {
             Employee employee = new Employee(savedPersonne, request.getCin());
             employeeRepository.save(employee);
         }
-        else if(request.getRole().equals(Role.Secretaire)){
+        else if(request.getRole().equals("Secretaire")){
             var personne = Personne.builder()
                     .nom(request.getNom())
                     .prenom(request.getPrenom())
@@ -55,7 +55,7 @@ public class AuthenticationService {
             Employee employee = new Employee(savedPersonne, request.getCin());
             employeeRepository.save(employee);
         }
-        else if(request.getRole().equals(Role.Technicien)){
+        else if(request.getRole().equals("Technicien")){
             var personne = Personne.builder()
                     .nom(request.getNom())
                     .prenom(request.getPrenom())
@@ -68,7 +68,7 @@ public class AuthenticationService {
             Personne savedPersonne = personneRepository.save(personne);
             Employee employee = new Employee(savedPersonne, request.getCin());
             employeeRepository.save(employee);
-        }else{
+        }else if(request.getRole().equals("client")){
             var personne = Personne.builder()
                     .nom(request.getNom())
                     .prenom(request.getPrenom())
