@@ -1,5 +1,7 @@
 package com.Chabiba_Support.Chabiba_Support.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,6 +19,7 @@ import java.util.List;
 @EqualsAndHashCode
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
 public  class Personne implements UserDetails {
@@ -37,75 +40,12 @@ public  class Personne implements UserDetails {
     @Column(nullable = false)
     private Role role;
 
-
-    public Personne(String nom, String prenom, String numTel, String email, String motDePasse,Role role) {
-        this.nom = nom;
-        this.prenom = prenom;
-        this.numTel = numTel;
-        this.email = email;
-        this.motDePasse = motDePasse;
-        this.role=role;
-    }
-
-    public Personne() {
-
-    }
-
-    public Long getIdPersonne() {
-        return idPersonne;
-    }
-
-    public void setIdPersonne(Long idPersonne) {
-        this.idPersonne = idPersonne;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public String getPrenom() {
-        return prenom;
-    }
-
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
-    }
-
-    public String getNumTel() {
-        return numTel;
-    }
-
-    public void setNumTel(String numTel) {
-        this.numTel = numTel;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getMotDePasse() {
-        return motDePasse;
-    }
-
-    public void setMotDePasse(String motDePasse) {
-        this.motDePasse = motDePasse;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
+    @OneToOne(mappedBy = "personne")
+    @JsonManagedReference
+    private Client client;
+    @OneToOne(mappedBy = "personne")
+    @JsonBackReference
+    private Employee employee;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -1,12 +1,21 @@
 package com.Chabiba_Support.Chabiba_Support.models;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.Serializable;
 import java.sql.Date;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Demande  implements Serializable {
 
     @Id
@@ -14,8 +23,11 @@ public class Demande  implements Serializable {
             strategy = GenerationType.IDENTITY
     )
     private Long idDemande;
-    @Column(nullable = false)
-    private boolean reponse;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false,columnDefinition = "VARCHAR(50) DEFAULT 'pending'")
+    private ResponseResponsable responseResponsable;
+    @Column(nullable=false, columnDefinition = "BIT DEFAULT 0")
+    private boolean verSecretaire;
     @Column(nullable = false)
     private Date date;
     @Column(nullable = false)
@@ -29,97 +41,20 @@ public class Demande  implements Serializable {
 
     @Column(nullable = false)
     private String budget;
-    @Column(nullable = false, length = 40)
+    @Column(nullable = false, length = 200)
     private String  message;
-    @Column(nullable = false)
-    private File documentD;
+    @Column(nullable = true,columnDefinition = "LONGBLOB",name = "documentD")
+    private byte[] documentD;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Type type;
     @ManyToOne
     @JoinColumn(
-            name = "idPersonne"
+            name = "id_client"
     )
     private Client client;
-    public Demande(){
 
-    }
-    public Long getIdDemande() {
-        return idDemande;
-    }
-
-    public void setIdDemande(Long idDemande) {
-        this.idDemande = idDemande;
-    }
-
-    public boolean isReponse() {
-        return reponse;
-    }
-
-    public void setReponse(boolean reponse) {
-        this.reponse = reponse;
-    }
-
-    public Etat getEtat() {
-        return etat;
-    }
-
-    public String getTitre() {
-        return titre;
-    }
-
-    public void setTitre(String titre) {
-        this.titre = titre;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public String getBudget() {
-        return budget;
-    }
-
-    public void setBudget(String budget) {
-        this.budget = budget;
-    }
-
-    public void setEtat(Etat etat) {
-        this.etat = etat;
-    }
-
-    public Service getService() {
-        return service;
-    }
-    public void setService(Service service) {
-        this.service = service;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public File getDocumentD() {
-        return documentD;
-    }
-
-    public void setDocumentD(File document) {
-        this.documentD = document;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
+    public void setIdClient(Long id){
+        this.client.setIdClient(id);
     }
 }

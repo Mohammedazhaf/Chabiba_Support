@@ -1,5 +1,6 @@
-package com.Chabiba_Support.Chabiba_Support.auth;
+package com.Chabiba_Support.Chabiba_Support.requests;
 
+import com.Chabiba_Support.Chabiba_Support.models.Role;
 import lombok.*;
 
 @Data
@@ -8,15 +9,12 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public class RegisterRequest {
-
+public class ClientRequestDTO {
     private String nom;
     private String prenom;
-    private String email;
     private String numTel;
-    private  String motDePasse;
-    private String role;
+    private String email;
+    private String motDePasse;
     private String nomEntreprise;
-    private String cin;
 
 }

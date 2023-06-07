@@ -1,7 +1,9 @@
 package com.Chabiba_Support.Chabiba_Support.repositories;
 
 
+import com.Chabiba_Support.Chabiba_Support.models.Client;
 import com.Chabiba_Support.Chabiba_Support.models.Employee;
+import com.Chabiba_Support.Chabiba_Support.models.Personne;
 import com.Chabiba_Support.Chabiba_Support.models.Role;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,14 +18,17 @@ import java.util.Optional;
 @Transactional
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
-    Optional<Employee> findEmployeeByIdPersonne(Long idPersonne);
-
-
-
-    @Query("SELECT e FROM Employee e WHERE e.role = :role")
+    Optional<Employee> findEmployeeByPersonne(Personne personne);
+//
+//
+//
+    @Query("SELECT e FROM Employee e JOIN e.personne p WHERE p.role = :role")
     List<Employee> findEmployeeByRole(@Param("role") Role role);
 
-    @Query("SELECT e FROM Employee e WHERE LOWER(e.nom) LIKE CONCAT('%', LOWER(:nom), '%')")
+    @Query("SELECT e FROM Employee e JOIN e.personne p WHERE LOWER(p.nom) LIKE CONCAT('%', LOWER(:nom), '%')")
     List<Employee> findByNomLikeIgnoreCase(@Param("nom") String nom);
+
+    @Query("SELECT e FROM Employee e JOIN FETCH e.personne WHERE e.idEmployee = :id")
+    Employee findEmployeeById(@Param("id") Long id);
 
 }

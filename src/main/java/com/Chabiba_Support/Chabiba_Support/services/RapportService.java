@@ -24,16 +24,14 @@ public class RapportService {
                 .orElseThrow(() -> new RapportNotFoundException("rapport introuvable avec l'ID : " + idRapport));
     }
 
-    public Rapport addRapport(Rapport rapport) {
+    public Rapport saveRapport(Rapport rapport) {
         return rapportRepository.save(rapport);
     }
 
     public void deleteRapport(Long idRapport) {
         Rapport rapport = rapportRepository.findByIdRapport(idRapport)
                 .orElseThrow(() -> new RapportNotFoundException("rapport introuvable avec l'ID : " + idRapport));
-
         rapportRepository.delete(rapport);
-
     }
 
 

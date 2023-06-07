@@ -1,32 +1,35 @@
 package com.Chabiba_Support.Chabiba_Support.models;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 
 
-
- @Getter
+@Getter
  @Setter
  @EqualsAndHashCode
  @Entity
+ @AllArgsConstructor
+ @NoArgsConstructor
  @Table(name = "Employee")
-    public class Employee extends Personne{
-        @Column(nullable = false, unique = true)
-        private String cin;
+    public class Employee {
+     @Id
+     @GeneratedValue(strategy = GenerationType.IDENTITY)
+     private Long idEmployee;
+    @Column(nullable = false, unique = true)
+    private String cin;
+    @OneToOne
+    @JoinColumn(name = "id_personne")
+    @JsonIgnore
+    private Personne personne;
+
+    public Employee(Personne personne, String cin) {
+        this.personne = personne;
+        this.cin = cin;
+    }
 
 
-        public Employee(){
-
-        }
-
-        public Employee(String nom, String prenom, String numTel, String email, String motDePasse, String cin, Role role) {
-            super(nom, prenom, numTel, email, motDePasse,role);
-            this.cin = cin;
-        }
-
-        public String getCin() {
+    public String getCin() {
             return cin;
         }
 
@@ -35,7 +38,9 @@ import lombok.Setter;
         }
 
 
-
-}
+        public Long getIdPersonne(){
+        return this.personne.getIdPersonne();
+        }
+ }
 
 

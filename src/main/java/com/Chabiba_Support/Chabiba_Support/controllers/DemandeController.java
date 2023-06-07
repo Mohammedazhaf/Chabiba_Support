@@ -2,31 +2,52 @@ package com.Chabiba_Support.Chabiba_Support.controllers;
 
 import com.Chabiba_Support.Chabiba_Support.models.Demande;
 import com.Chabiba_Support.Chabiba_Support.models.Etat;
+import com.Chabiba_Support.Chabiba_Support.models.ResponseResponsable;
+import com.Chabiba_Support.Chabiba_Support.requests.DemandeRequestDTO;
 import com.Chabiba_Support.Chabiba_Support.services.DemandeService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 @RestController
-@RequestMapping({"/api/demande"})
+@RequestMapping(value = {"/api/demande"},produces = MediaType.APPLICATION_JSON_VALUE)
+@AllArgsConstructor
 public class DemandeController {
 
     private DemandeService demandeService;
+    private ModelMapper modelMapper;
 
     @GetMapping({"/all"})
     public List<Demande> findAll(){
-        return this.demandeService.findAll();
+        return demandeService.findAll();
     }
 
     @GetMapping({"/etat/{etat}"})
     public List<Demande> findByEtat(@PathVariable("etat") Etat etat) {
-        return this.demandeService.findByEtat(etat);
+        return demandeService.findByEtat(etat);
     }
 
-    @PostMapping({"/add"})
-    public Demande addDemande(@RequestBody Demande demande) {
-        return this.demandeService.save(demande);
+    @PostMapping(value = {"/add"}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> createDemande(@RequestPart("file") MultipartFile file, @RequestPart("demande") String demandeJson) throws IOException {
+        // Convert DemandeRequestDTO to Demande entity  (Can Be changed)
+        DemandeRequestDTO demandeDTO = new ObjectMapper().readValue(demandeJson, DemandeRequestDTO.class);
+        Demande demande = new Demande();
+        demande = modelMapper.map(demandeDTO, Demande.class);
+        demande.setDocumentD(file.getBytes());
+        demande.setIdDemande(null);
+        demande.setResponseResponsable(ResponseResponsable.pending);
+        demandeService.saveDemande(demande);
+
+        return ResponseEntity.ok("Demande created successfully");
     }
 
     @DeleteMapping({"/delete/{id}"})
@@ -39,19 +60,56 @@ public class DemandeController {
         long count = demandeService.countAllDemandes();
         return new ResponseEntity<>(count, HttpStatus.OK);
     }
-    @PutMapping("/accepter/{id}")
+
+    //that accesptation from Version secretaire to version acceptable by Responsable
+    @PutMapping("/accepterResponsable/{id}")
     public Demande acceptDemande(@PathVariable(value = "id") long id) {
         Demande currentDemande = demandeService.findById(id);
-        currentDemande.setEtat(Etat.valueOf("EnAttente"));
+        currentDemande.setResponseResponsable(ResponseResponsable.acceptable);
         return demandeService.save(currentDemande);
     }
-    @PutMapping("/rejeter/{id}")
+    @PutMapping("/rejeterResponsable/{id}")
     public Demande rejectDemande(@PathVariable(value = "id") long id) {
         Demande currentDemande = demandeService.findById(id);
-        currentDemande.setEtat(Etat.valueOf("Termine"));
+        currentDemande.setResponseResponsable(ResponseResponsable.rejected);
         return demandeService.save(currentDemande);
     }
-    // @PostMapping("/update") {
-    //   return;
-    //}
+
+    @PutMapping("/secretairePassed/{id}")
+    public Demande secretairePassed(@PathVariable(value = "id") long id){
+        Demande currentDemande = demandeService.findById(id);
+        currentDemande.setVerSecretaire(true);
+        return demandeService.save(currentDemande);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> updateDemande(@RequestPart("demande") String demandeJson,@RequestPart("file") MultipartFile file, @PathVariable(value = "id") long id) throws IOException {
+        Demande currentDemande = demandeService.findById(id);
+        DemandeRequestDTO demandeRequestDTO = new ObjectMapper().readValue(demandeJson, DemandeRequestDTO.class);
+
+
+        currentDemande.setDate(demandeRequestDTO.getDate());
+        currentDemande.setTitre(demandeRequestDTO.getTitre());
+        currentDemande.setEtat(demandeRequestDTO.getEtat());
+        currentDemande.setService(demandeRequestDTO.getService());
+        currentDemande.setMessage(demandeRequestDTO.getMessage());
+        currentDemande.setType(demandeRequestDTO.getType());
+
+        if(Arrays.equals(currentDemande.getDocumentD(), file.getBytes())){
+            System.out.println("The Document has Equals");
+        }else{
+            System.out.println("The Document has Not Equals");
+            currentDemande.setDocumentD(file.getBytes());
+        }
+        demandeService.saveDemande(currentDemande);
+        return ResponseEntity.ok("Demande updated successfully");
+    }
+    @GetMapping({"/getById/{id}"})
+    public ResponseEntity<Demande> findDemandeById(@PathVariable("id") Long id){
+        Demande demande = demandeService.findById(id);
+        if (demande == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(demande);
+    }
 }

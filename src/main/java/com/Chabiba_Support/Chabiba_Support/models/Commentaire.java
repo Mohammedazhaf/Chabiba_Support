@@ -1,22 +1,21 @@
 package com.Chabiba_Support.Chabiba_Support.models;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 
 
 @Getter
 @Setter
-
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Commentaire implements Serializable {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
     private Long idCommentaire;
     @Column(nullable = false, length = 5)
@@ -25,54 +24,19 @@ public class Commentaire implements Serializable {
     private String texteC;
     @ManyToOne
     @JoinColumn(
-            name = "id_personne"
+            name = "idClient"
     )
-    public Personne personne;
+    public Client client;
     @OneToOne
     @JoinColumn(
             name = "id_demande"
     )
     public Demande demande;
 
-    public Commentaire(){
-
+    public long getIdClient(){
+        return this.client.getIdClient();
     }
-    public void setIdCommentaire(Long idCommentaire) {
-        this.idCommentaire = idCommentaire;
-    }
-
-    public Long getIdCommentaire() {
-        return idCommentaire;
-    }
-    public int getEtoile() {
-        return etoile;
-    }
-
-    public void setEtoile(int etoile) {
-        this.etoile = etoile;
-    }
-
-    public String getTexteC() {
-        return texteC;
-    }
-
-    public void setTexteC(String texte) {
-        this.texteC = texte;
-    }
-
-    public Personne getPersonne() {
-        return personne;
-    }
-
-    public void setPersonne(Personne personne) {
-        this.personne = personne;
-    }
-
-    public Demande getDemande() {
-        return demande;
-    }
-
-    public void setDemande(Demande demande) {
-        this.demande = demande;
+    public long getIdDemande(){
+        return this.demande.getIdDemande();
     }
 }
