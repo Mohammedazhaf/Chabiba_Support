@@ -27,8 +27,18 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
         @Query("SELECT c FROM Client c WHERE c.nomEntreprise = :nomEntreprise")
         List<Client> findClientByNomEntreprise(@Param("nomEntreprise") String nomEntreprise);
 
+
+
+
+
     @Query("SELECT c FROM Client c JOIN c.personne p WHERE LOWER(p.nom) LIKE CONCAT('%', LOWER(:nom), '%')")
     List<Client> findByNomLikeIgnoreCase(@Param("nom") String nom);
+
+
+
+
+
+
     @Query("SELECT c FROM Client c JOIN FETCH c.personne WHERE c.idClient = :id")
     Client findClientById(@Param("id") Long id);
     }

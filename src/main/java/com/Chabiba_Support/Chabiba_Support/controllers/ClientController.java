@@ -47,9 +47,15 @@ public class ClientController {
         return ResponseEntity.created(uri).body(clientService.addClient(personne,clientRequestDTO.getNomEntreprise()));
     }
 
-    @GetMapping("/find/{id}")
+    @GetMapping("/findPersonne/{id}")
     public Client getClientBYIdPersonne (@PathVariable("id") Long id) {
         Client client = clientService.findClientByIdPersonne(id);
+        return client;
+    }
+
+    @GetMapping("/find/{id}")
+    public Client getClientBYId (@PathVariable("id") Long id) {
+        Client client = clientService.findClientById(id);
         return client;
     }
 
