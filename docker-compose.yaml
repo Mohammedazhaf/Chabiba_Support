@@ -41,8 +41,8 @@ version: '3'
 
 services:
   mysqldb:
-    container_name: mysqldb
-    image: mysql:latest
+    container_name: mysqldbcom
+    image: mohammedazhaf/chabiba:mysqldb
     networks:
       - jwtbd-network
     environment:
@@ -57,7 +57,7 @@ services:
 
   chabiba_support:
     container_name: chabiba_support
-    image: image_spring
+    image: mohammedazhaf/chabiba:image-spring
     ports:
       - 8080:8080
     networks:
