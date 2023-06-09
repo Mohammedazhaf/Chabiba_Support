@@ -47,6 +47,16 @@ public  class Personne implements UserDetails {
     @JsonBackReference
     private Employee employee;
 
+    public Personne(long l, String personne, String personne1, String s, String s1, String motdepasse, Role responsable) {
+        this.setIdPersonne(l);
+        this.setNom(personne);
+        this.setPrenom(personne1);
+        this.setNumTel(s);
+        this.setEmail(s1);
+        this.setMotDePasse(motdepasse);
+        this.setRole(responsable);
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));

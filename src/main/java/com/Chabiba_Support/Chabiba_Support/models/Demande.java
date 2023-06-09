@@ -5,9 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.Serializable;
 import java.sql.Date;
 
@@ -53,6 +51,20 @@ public class Demande  implements Serializable {
             name = "id_client"
     )
     private Client client;
+
+    public Demande(long l, ResponseResponsable pending, boolean b, Date date, String titre, Etat enCours, Service developpement, String s, String message, Type urgent, Client client) {
+        this.setIdDemande(l);
+        this.setResponseResponsable(pending);
+        this.setVerSecretaire(b);
+        this.setDate(date);
+        this.setTitre(titre);
+        this.setEtat(enCours);
+        this.setService(developpement);
+        this.setBudget(s);
+        this.setMessage(message);
+        this.setType(urgent);
+        this.setClient(client);
+    }
 
     public void setIdClient(Long id){
         this.client.setIdClient(id);

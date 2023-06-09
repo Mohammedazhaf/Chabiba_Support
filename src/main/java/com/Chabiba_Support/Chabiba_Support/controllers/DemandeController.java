@@ -26,6 +26,7 @@ public class DemandeController {
     private DemandeService demandeService;
     private ModelMapper modelMapper;
 
+
     @GetMapping({"/all"})
     public List<Demande> findAll(){
         return demandeService.findAll();

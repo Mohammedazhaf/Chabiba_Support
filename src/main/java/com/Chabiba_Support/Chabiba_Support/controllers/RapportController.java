@@ -1,6 +1,7 @@
 package com.Chabiba_Support.Chabiba_Support.controllers;
 
 
+import com.Chabiba_Support.Chabiba_Support.exception.RapportNotFoundException;
 import com.Chabiba_Support.Chabiba_Support.models.Demande;
 import com.Chabiba_Support.Chabiba_Support.models.Employee;
 import com.Chabiba_Support.Chabiba_Support.models.Rapport;
@@ -70,8 +71,14 @@ public class RapportController {
 
     @DeleteMapping("/delete/{idRapport}")
     public ResponseEntity<?> deleteRapport(@PathVariable Long idRapport) {
-        rapportService.deleteRapport(idRapport);
-        return ResponseEntity.ok().build();
+//        rapportService.deleteRapport(idRapport);
+//        return ResponseEntity.ok().build();
+        try {
+            rapportService.deleteRapport(idRapport);
+            return ResponseEntity.ok().build();
+        } catch (RapportNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
     @PutMapping(value = {"/update/{id}"}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> updateRapport(@RequestPart("file") MultipartFile file, @RequestPart("rapport") String rapportJson, @PathVariable(value = "id") long id) throws IOException {
