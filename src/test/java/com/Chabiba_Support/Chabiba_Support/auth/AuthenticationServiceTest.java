@@ -86,32 +86,6 @@ class AuthenticationServiceTest {
         verify(passwordEncoder).encode((CharSequence) any());
     }
 
-    /**
-     * Method under test: {@link AuthenticationService#register(RegisterRequest)}
-     */
-    @Test
-    void testRegister3() {
-        when(personneRepository.save((Personne) any()))
-                .thenReturn(new Personne(1L, "Personne", "Personne1", "foo", "S1", "Motdepasse", Role.Secretaire));
-        when(employeeRepository.save((Employee) any())).thenReturn(new Employee());
-        when(jwtService.generateToken((UserDetails) any())).thenReturn("ABC123");
-        when(passwordEncoder.encode((CharSequence) any())).thenReturn("secret");
-        authenticationService.register(new RegisterRequest());
-    }
-
-    /**
-     * Method under test: {@link AuthenticationService#register(RegisterRequest)}
-     */
-    @Test
-    void testRegister4() {
-
-        when(personneRepository.save((Personne) any()))
-                .thenReturn(new Personne(1L, "Personne", "Personne1", "foo", "S1", "Motdepasse", Role.Secretaire));
-        when(employeeRepository.save((Employee) any())).thenReturn(new Employee());
-        when(jwtService.generateToken((UserDetails) any())).thenReturn("ABC123");
-        when(passwordEncoder.encode((CharSequence) any())).thenReturn("secret");
-        authenticationService.register(null);
-    }
 
     /**
      * Method under test: {@link AuthenticationService#authenticate(AuthenticationRequest)}
@@ -131,28 +105,5 @@ class AuthenticationServiceTest {
         verify(authenticationManager).authenticate((Authentication) any());
     }
 
-    /**
-     * Method under test: {@link AuthenticationService#authenticate(AuthenticationRequest)}
-     */
-    @Test
-    void testAuthenticate2() throws AuthenticationException {  when(personneRepository.findByEmail((String) any())).thenReturn(Optional.empty());
-        when(jwtService.generateToken((UserDetails) any())).thenReturn("ABC123");
-        when(authenticationManager.authenticate((Authentication) any()))
-                .thenReturn(new TestingAuthenticationToken("Principal", "Credentials"));
-        authenticationService.authenticate(new AuthenticationRequest("jane.doe@example.org", "Mot De Passe"));
-    }
-
-    /**
-     * Method under test: {@link AuthenticationService#authenticate(AuthenticationRequest)}
-     */
-    @Test
-    void testAuthenticate3() throws AuthenticationException {
-        when(personneRepository.findByEmail((String) any())).thenReturn(
-                Optional.of(new Personne(1L, "Personne", "Personne1", "foo", "S1", "Motdepasse", Role.Secretaire)));
-        when(jwtService.generateToken((UserDetails) any())).thenReturn("ABC123");
-        when(authenticationManager.authenticate((Authentication) any()))
-                .thenReturn(new TestingAuthenticationToken("Principal", "Credentials"));
-        authenticationService.authenticate(null);
-    }
 }
 

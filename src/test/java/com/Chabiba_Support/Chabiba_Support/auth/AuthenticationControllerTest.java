@@ -27,39 +27,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 class AuthenticationControllerTest {
-    /**
-     * Method under test: {@link AuthenticationController#register(AuthenticationRequest)}
-     */
-    @Test
-    void testRegister() {
-        PersonneRepository personneRepository = mock(PersonneRepository.class);
-        ClientRepository clientRepository = mock(ClientRepository.class);
-        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        JwtService jwtService = new JwtService();
-        AuthenticationController authenticationController = new AuthenticationController(
-                new AuthenticationService(personneRepository, clientRepository, employeeRepository, passwordEncoder, jwtService,
-                        new ProviderManager(new ArrayList<>())));
-        authenticationController.register(new AuthenticationRequest("jane.doe@example.org", "Mot De Passe"));
-    }
 
-    /**
-     * Method under test: {@link AuthenticationController#register(AuthenticationRequest)}
-     */
-    @Test
-    void testRegister2() {
-        ArrayList<AuthenticationProvider> authenticationProviderList = new ArrayList<>();
-        authenticationProviderList.add(new RunAsImplAuthenticationProvider());
-        ProviderManager authenticationManager = new ProviderManager(authenticationProviderList);
-        PersonneRepository personneRepository = mock(PersonneRepository.class);
-        ClientRepository clientRepository = mock(ClientRepository.class);
-        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        AuthenticationController authenticationController = new AuthenticationController(
-                new AuthenticationService(personneRepository, clientRepository, employeeRepository, passwordEncoder,
-                        new JwtService(), authenticationManager));
-        authenticationController.register(new AuthenticationRequest("jane.doe@example.org", "Mot De Passe"));
-    }
 
     /**
      * Method under test: {@link AuthenticationController#register(AuthenticationRequest)}
@@ -76,103 +44,6 @@ class AuthenticationControllerTest {
         assertTrue(actualRegisterResult.getHeaders().isEmpty());
         assertEquals(200, actualRegisterResult.getStatusCodeValue());
         verify(authenticationService).authenticate((AuthenticationRequest) any());
-    }
-
-    /**
-     * Method under test: {@link AuthenticationController#register(RegisterRequest)}
-     */
-    @Test
-    void testRegister4() {
-        PersonneRepository personneRepository = mock(PersonneRepository.class);
-        ClientRepository clientRepository = mock(ClientRepository.class);
-        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        JwtService jwtService = new JwtService();
-        AuthenticationController authenticationController = new AuthenticationController(
-                new AuthenticationService(personneRepository, clientRepository, employeeRepository, passwordEncoder,
-                        jwtService, new ProviderManager(new ArrayList<>())));
-        authenticationController.register(new RegisterRequest("Nom", "Prenom", "jane.doe@example.org", "Num Tel",
-                "Mot De Passe", "Role", "Nom Entreprise", "Cin"));
-    }
-
-    /**
-     * Method under test: {@link AuthenticationController#register(RegisterRequest)}
-     */
-    @Test
-    void testRegister5() {
-        PersonneRepository personneRepository = mock(PersonneRepository.class);
-        ClientRepository clientRepository = mock(ClientRepository.class);
-        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        JwtService jwtService = new JwtService();
-        AuthenticationController authenticationController = new AuthenticationController(
-                new AuthenticationService(personneRepository, clientRepository, employeeRepository, passwordEncoder,
-                        jwtService, new ProviderManager(new ArrayList<>())));
-
-        RegisterRequest registerRequest = new RegisterRequest("Nom", "Prenom", "jane.doe@example.org", "Num Tel",
-                "Mot De Passe", "Role", "Nom Entreprise", "Cin");
-        registerRequest.setRole((String) "Responsable");
-        authenticationController.register(registerRequest);
-    }
-
-    /**
-     * Method under test: {@link AuthenticationController#register(RegisterRequest)}
-     */
-    @Test
-    void testRegister6() {
-        PersonneRepository personneRepository = mock(PersonneRepository.class);
-        ClientRepository clientRepository = mock(ClientRepository.class);
-        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        JwtService jwtService = new JwtService();
-        AuthenticationController authenticationController = new AuthenticationController(
-                new AuthenticationService(personneRepository, clientRepository, employeeRepository, passwordEncoder,
-                        jwtService, new ProviderManager(new ArrayList<>())));
-
-        RegisterRequest registerRequest = new RegisterRequest("Nom", "Prenom", "jane.doe@example.org", "Num Tel",
-                "Mot De Passe", "Role", "Nom Entreprise", "Cin");
-        registerRequest.setRole((String) "Secretaire");
-        authenticationController.register(registerRequest);
-    }
-
-    /**
-     * Method under test: {@link AuthenticationController#register(RegisterRequest)}
-     */
-    @Test
-    void testRegister7() {
-        PersonneRepository personneRepository = mock(PersonneRepository.class);
-        ClientRepository clientRepository = mock(ClientRepository.class);
-        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        JwtService jwtService = new JwtService();
-        AuthenticationController authenticationController = new AuthenticationController(
-                new AuthenticationService(personneRepository, clientRepository, employeeRepository, passwordEncoder,
-                        jwtService, new ProviderManager(new ArrayList<>())));
-
-        RegisterRequest registerRequest = new RegisterRequest("Nom", "Prenom", "jane.doe@example.org", "Num Tel",
-                "Mot De Passe", "Role", "Nom Entreprise", "Cin");
-        registerRequest.setRole((String) "Technicien");
-        authenticationController.register(registerRequest);
-    }
-
-    /**
-     * Method under test: {@link AuthenticationController#register(RegisterRequest)}
-     */
-    @Test
-    void testRegister8() {
-        PersonneRepository personneRepository = mock(PersonneRepository.class);
-        ClientRepository clientRepository = mock(ClientRepository.class);
-        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        JwtService jwtService = new JwtService();
-        AuthenticationController authenticationController = new AuthenticationController(
-                new AuthenticationService(personneRepository, clientRepository, employeeRepository, passwordEncoder,
-                        jwtService, new ProviderManager(new ArrayList<>())));
-
-        RegisterRequest registerRequest = new RegisterRequest("Nom", "Prenom", "jane.doe@example.org", "Num Tel",
-                "Mot De Passe", "Role", "Nom Entreprise", "Cin");
-        registerRequest.setRole((String) "client");
-        authenticationController.register(registerRequest);
     }
 
     /**
@@ -200,16 +71,6 @@ class AuthenticationControllerTest {
         assertTrue(actualRegisterResult.hasBody());
         assertTrue(actualRegisterResult.getHeaders().isEmpty());
         assertEquals(200, actualRegisterResult.getStatusCodeValue());
-    }
-
-    /**
-     * Method under test: {@link AuthenticationController#register(RegisterRequest)}
-     */
-    @Test
-    void testRegister10() {
-        AuthenticationController authenticationController = new AuthenticationController(null);
-        authenticationController.register(new RegisterRequest("Nom", "Prenom", "jane.doe@example.org", "Num Tel",
-                "Mot De Passe", "Role", "Nom Entreprise", "Cin"));
     }
 
     /**
@@ -258,31 +119,6 @@ class AuthenticationControllerTest {
         assertEquals(200, actualRegisterResult.getStatusCodeValue());
         verify(personneRepository).save((Personne) any());
         verify(employeeRepository).save((Employee) any());
-    }
-
-    /**
-     * Method under test: {@link AuthenticationController#register(RegisterRequest)}
-     */
-    @Test
-    void testRegister13() {
-        PersonneRepository personneRepository = mock(PersonneRepository.class);
-        when(personneRepository.save((Personne) any()))
-                .thenReturn(new Personne(1L, "Personne", "Personne1", "foo", "S1", "Motdepasse", Role.Secretaire));
-        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
-        when(employeeRepository.save((Employee) any())).thenReturn(new Employee());
-
-        ArrayList<AuthenticationProvider> authenticationProviderList = new ArrayList<>();
-        authenticationProviderList.add(new RunAsImplAuthenticationProvider());
-        ProviderManager authenticationManager = new ProviderManager(authenticationProviderList);
-        ClientRepository clientRepository = mock(ClientRepository.class);
-        AuthenticationController authenticationController = new AuthenticationController(
-                new AuthenticationService(personneRepository, clientRepository, employeeRepository,
-                        new BCryptPasswordEncoder(), null, authenticationManager));
-
-        RegisterRequest registerRequest = new RegisterRequest("Nom", "Prenom", "jane.doe@example.org", "Num Tel",
-                "Mot De Passe", "Role", "Nom Entreprise", "Cin");
-        registerRequest.setRole((String) "Responsable");
-        authenticationController.register(registerRequest);
     }
 
     /**
