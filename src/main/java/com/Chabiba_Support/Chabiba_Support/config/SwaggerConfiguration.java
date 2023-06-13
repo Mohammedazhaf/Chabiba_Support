@@ -1,6 +1,5 @@
 package com.Chabiba_Support.Chabiba_Support.config;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
@@ -21,10 +20,10 @@ public class SwaggerConfiguration {
 
     private ApiInfo apiInfo() {
         return new ApiInfo("My REST API",
-                "this is api for an chabiba app.",
+                "This is the API for a Chabiba app.",
                 "1.0",
                 "Terms of service",
-                new Contact("devops Team", "http://localhost:4200/", "devops Team"),
+                new Contact("DevOps Team", "http://localhost:4200/", "devops@team.com"),
                 "License of API",
                 "API license URL",
                 Collections.emptyList());
@@ -37,7 +36,7 @@ public class SwaggerConfiguration {
                 .securityContexts(Arrays.asList(securityContext()))
                 .securitySchemes(Arrays.asList(apiKey()))
                 .select()
-                .apis(RequestHandlerSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("com.Chabiba_Support.Chabiba_Support")) // Spécifiez le bon package pour les contrôleurs de votre application
                 .paths(PathSelectors.any())
                 .build();
     }
@@ -52,12 +51,11 @@ public class SwaggerConfiguration {
                 .build();
     }
 
-    List<SecurityReference> defaultAuth() {
-        AuthorizationScope authorizationScope
-                = new AuthorizationScope("global", "accessEverything");
+    private List<SecurityReference> defaultAuth() {
+        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
-        return Arrays.asList(new SecurityReference("JWT", authorizationScopes));
+        return Arrays.asList(
+                new SecurityReference("JWT", authorizationScopes));
     }
-
 }

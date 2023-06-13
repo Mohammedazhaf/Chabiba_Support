@@ -72,6 +72,11 @@ services:
       - MYSQL_USERNAME=root
       - MYSQL_PASSWORD=root
       - MYSQL_PORT=3306
+  # Frontend Service
+  angular:
+    image: angular-image
+    ports:
+      - "4200:80"
 
 networks:
   jwtbd-network:
