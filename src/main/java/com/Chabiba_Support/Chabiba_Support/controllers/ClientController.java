@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "/client", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 public class ClientController {
@@ -88,16 +89,6 @@ public class ClientController {
         long count = clientService.countAllClients();
         return new ResponseEntity<>(count, HttpStatus.OK);
     }
-
-
-
-
-
-
-
-
-
-
 
 
 }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping(value = {"/api/commentaires"}, produces = MediaType.APPLICATION_JSON_VALUE)
 public class CommentaireController {
     @Autowired
