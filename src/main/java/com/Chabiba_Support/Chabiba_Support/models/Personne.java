@@ -36,6 +36,8 @@ public  class Personne implements UserDetails {
     private String email;
     @Column(name ="mot_de_passe",nullable = false)
     private String motDePasse;
+
+	private String profilPicture;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
@@ -92,5 +94,75 @@ public  class Personne implements UserDetails {
         return true;
     }
 
+	public Long getIdPersonne() {
+		return idPersonne;
+	}
 
+	public void setIdPersonne(Long idPersonne) {
+		this.idPersonne = idPersonne;
+	}
+
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public String getPrenom() {
+		return prenom;
+	}
+
+	public void setPrenom(String prenom) {
+		this.prenom = prenom;
+	}
+
+	public String getNumTel() {
+		return numTel;
+	}
+
+	public void setNumTel(String numTel) {
+		this.numTel = numTel;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getMotDePasse() {
+		return motDePasse;
+	}
+
+	public void setMotDePasse(String motDePasse) {
+		this.motDePasse = motDePasse;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
+	}
+
+	public Employee getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
 }

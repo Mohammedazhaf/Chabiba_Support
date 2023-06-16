@@ -24,13 +24,17 @@ public class EmployeeService {
     private  final PasswordEncoder passwordEncoder;
 
 
-    public Employee addEmployee(Personne personne, String cin) {
-        Personne savedPersonne = personneRepository.save(personne);
-        Employee employee = new Employee(savedPersonne, cin);
-        return employeeRepository.save(employee);
-    }
+	public Employee addEmployee(Personne personne, String cin, String password,String speciality) {
+		personne.setMotDePasse(passwordEncoder.encode(password)); // Apply MD5 encryption
+		Personne savedPersonne = personneRepository.save(personne);
+		Employee employee = new Employee(savedPersonne, cin);
+		employee.setSpeciality(speciality);
+		return employeeRepository.save(employee);
+	}
 
-    //la liste de tout les utilisateurs
+
+
+	//la liste de tout les utilisateurs
     public List<Employee> findAllEmployees() {
         log.info("Fetching all employees");
         return employeeRepository.findAll();
@@ -91,4 +95,6 @@ public class EmployeeService {
     public Employee findEmployeeById(Long id){
         return employeeRepository.findEmployeeById(id);
     }
+
+
 }

@@ -44,5 +44,6 @@ public class Affectation {
     }
 
 
-
+	public void deleteAffectation(Affectation currentAffectation) {
+	}
 }

@@ -11,6 +11,7 @@ import java.sql.Date;
 @Getter
 @Setter
 public class RapportRequestDTO {
+
     private Date date;
     private String contenu;
     private long idEmployee;

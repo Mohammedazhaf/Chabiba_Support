@@ -18,6 +18,8 @@ import net.minidev.json.annotate.JsonIgnore;
      private Long idEmployee;
     @Column(nullable = false, unique = true)
     private String cin;
+
+	private String speciality;
     @OneToOne
     @JoinColumn(name = "id_personne")
     @JsonIgnore
