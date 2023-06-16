@@ -87,7 +87,7 @@ public class RapportController {
 		//rapport.setDocumentR(file.getBytes());
 		rapport.setIdRapport(null);
 		if (!file.isEmpty()) {
-			String filePath = "C:/Users/Lenovo/Desktop/Chabiba_Support/src/main/uploads/" + file.getOriginalFilename();
+			String filePath = "src/main/uploads" + file.getOriginalFilename();
 			file.transferTo(new File(filePath));
 			rapport.setFilePath(filePath);
 		}
