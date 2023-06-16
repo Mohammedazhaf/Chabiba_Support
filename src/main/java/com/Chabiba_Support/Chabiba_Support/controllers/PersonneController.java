@@ -5,6 +5,7 @@ import com.Chabiba_Support.Chabiba_Support.services.PersonneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -22,6 +23,8 @@ import java.util.Optional;
 @RequestMapping("/personnes")
 public class PersonneController {
 	private final PersonneService personneService;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	public PersonneController(PersonneService personneService) {
@@ -63,6 +66,7 @@ public class PersonneController {
 	@PutMapping("/{id}")
 	public ResponseEntity<Personne> updatePersonne(@PathVariable("id") Long id, @RequestBody Personne personne) {
 		personne.setIdPersonne(id);
+		personne.setMotDePasse(passwordEncoder.encode(personne.getMotDePasse()));
 		Personne updatedPersonne = personneService.updatePersonne(personne);
 		return new ResponseEntity<>(updatedPersonne, HttpStatus.OK);
 	}
