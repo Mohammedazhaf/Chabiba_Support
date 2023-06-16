@@ -25,4 +25,8 @@ public interface RapportRepository extends JpaRepository<Rapport, Long> {
     void delete(Rapport rapport);
 
 
+
+		List<Rapport> findByDemandeIdDemande(Long idDemande);
+
+
 }

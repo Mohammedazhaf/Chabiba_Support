@@ -1,9 +1,6 @@
 package com.Chabiba_Support.Chabiba_Support.controllers;
 
-import com.Chabiba_Support.Chabiba_Support.models.Affectation;
-import com.Chabiba_Support.Chabiba_Support.models.Demande;
-import com.Chabiba_Support.Chabiba_Support.models.Employee;
-import com.Chabiba_Support.Chabiba_Support.models.Rapport;
+import com.Chabiba_Support.Chabiba_Support.models.*;
 import com.Chabiba_Support.Chabiba_Support.requests.AffectationRequestDTO;
 import com.Chabiba_Support.Chabiba_Support.services.AffectationService;
 import com.Chabiba_Support.Chabiba_Support.services.DemandeService;
@@ -15,8 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping({"/api/affectation"})
 public class AffectationController {
@@ -43,7 +43,7 @@ public class AffectationController {
         affectation1.setDelaiDate(affectationDTO.getDelaiDate());
         affectation1.setIdAffectation(null);
         affectationService.saveAffectation(affectation1);
-        return ResponseEntity.ok("The affectation was created");
+        return ResponseEntity.ok("");
     }
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateAffectation(@RequestBody AffectationRequestDTO affectationDTO,@PathVariable(value = "id") long id){
@@ -54,10 +54,7 @@ public class AffectationController {
 //        Hibernate.initialize(currentAffectation);
 //        Hibernate.initialize(currentAffectation.getEmployee());
 //        Hibernate.initialize(currentAffectation.getDemande());
-
-
-
-        currentAffectation.setMission(affectationDTO.getMission());
+		currentAffectation.setMission(affectationDTO.getMission());
         currentAffectation.setEmployee(employee);
         currentAffectation.setDemande(demande);
         currentAffectation.setDelaiDate(affectationDTO.getDelaiDate());
@@ -65,5 +62,12 @@ public class AffectationController {
         affectationService.saveAffectation(currentAffectation);
         return ResponseEntity.ok("The affectation has updated");
     }
-
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<Map<String, Boolean>> deleteAffectation(@PathVariable Long id) {
+		Affectation currentAffectation = affectationService.getAffectationById(id);
+		affectationService.deleteAffectation(currentAffectation);
+		Map<String, Boolean> response = new HashMap<>();
+		response.put("deleted", Boolean.TRUE);
+		return ResponseEntity.ok(response);
+	}
 }

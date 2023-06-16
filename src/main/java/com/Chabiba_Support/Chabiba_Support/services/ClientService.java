@@ -50,10 +50,14 @@ public class ClientService {
         return clientRepository.findClientByPersonne(findedPersonne).orElseThrow(() -> new ClientNotFoundException("Client by id " + idPersonne + " was not found"));
     }
 
-    public List<Client> findByNomLikeIgnoreCase(String nom) {
-        return clientRepository.findByNomLikeIgnoreCase(nom);
-    }
 
+	public Client findClientByEmail(String email){
+		Personne findedPersonne = personneRepository.findByEmail(email).orElse(null);
+		return clientRepository.findClientByPersonne(findedPersonne).orElseThrow(() -> new ClientNotFoundException("Client by email " + email + " was not found"));
+	}
+	public List<Client> findByNomLikeIgnoreCase(String nom) {
+		return clientRepository.findByNomLikeIgnoreCase(nom);
+	}
     public long countAllClients() {
         return clientRepository.count();
     }

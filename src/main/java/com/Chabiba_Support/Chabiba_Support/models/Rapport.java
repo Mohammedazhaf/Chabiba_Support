@@ -50,4 +50,62 @@ public class Rapport implements Serializable {
     public long getIdDemande(){
         return this.demande.getIdDemande();
     }
+	@Column(nullable = true)
+	private String filePath;
+
+	public Long getIdRapport() {
+		return idRapport;
+	}
+
+	public void setIdRapport(Long idRapport) {
+		this.idRapport = idRapport;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public String getContenu() {
+		return contenu;
+	}
+
+	public void setContenu(String contenu) {
+		this.contenu = contenu;
+	}
+
+	public Employee getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
+
+	public Demande getDemande() {
+		return demande;
+	}
+
+	public void setDemande(Demande demande) {
+		this.demande = demande;
+	}
+
+	public byte[] getDocumentR() {
+		return documentR;
+	}
+
+	public void setDocumentR(byte[] documentR) {
+		this.documentR = documentR;
+	}
+
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
 }

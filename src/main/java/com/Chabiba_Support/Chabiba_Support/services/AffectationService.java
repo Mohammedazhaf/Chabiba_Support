@@ -38,6 +38,9 @@ public class AffectationService {
         hints.put("javax.persistence.fetchgraph", entityGraph);
         return entityManager.find(Affectation.class, id, hints);
     }
+	public void deleteAffectation(Affectation currentAffectation) {
+		affectationRepository.delete(currentAffectation);
+	}
 
 
 }
