@@ -87,12 +87,12 @@ public class RapportController {
 		//rapport.setDocumentR(file.getBytes());
 		rapport.setIdRapport(null);
 		if (!file.isEmpty()) {
-			String filePath = "C:/Users/issam/Desktop/BackendNew/uploads/" + file.getOriginalFilename();
+			String filePath = "C:/Users/Lenovo/Desktop/Chabiba_Support/src/main/uploads/" + file.getOriginalFilename();
 			file.transferTo(new File(filePath));
 			rapport.setFilePath(filePath);
 		}
 		rapportService.saveRapport(rapport);
-		return ResponseEntity.ok("Rapport created succusfully");
+		return ResponseEntity.ok("Rapport created successfully");
 	}
 	@DeleteMapping("/delete/{idRapport}")
 	public ResponseEntity<?> deleteRapport(@PathVariable Long idRapport) {

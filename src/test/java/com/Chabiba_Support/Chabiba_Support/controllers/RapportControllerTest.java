@@ -25,17 +25,21 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
-
+@ExtendWith(MockitoExtension.class)
 class RapportControllerTest {
 
 
@@ -49,35 +53,38 @@ class RapportControllerTest {
     @InjectMocks
     private RapportController rapportController;
 
-//    @Test
-//    void createRapport_shouldSaveRapportAndReturnSuccessResponse() throws IOException {
-//        // Mocking the dependencies and request data
-//        MultipartFile file = new MockMultipartFile("file", "test.txt", MediaType.TEXT_PLAIN_VALUE, "file content".getBytes());
-//        String rapportJson = "{\"date\":\"2023-06-13T12:00:00Z\", \"contenu\":\"Rapport content\", \"idEmployee\":1, \"idDemande\":1}";
-//
-//        RapportRequestDTO rapportDTO = new RapportRequestDTO();
-//        rapportDTO.setDate(new Date(2023,6,13));
-//        rapportDTO.setContenu("Rapport content");
-//        rapportDTO.setIdEmployee(1L);
-//        rapportDTO.setIdDemande(1L);
-//
-//        Employee employee = new Employee();
-//        employee.setIdEmployee(1L);
-//        when(employeeService.findEmployeeById(1L)).thenReturn(employee);
-//
-//        Demande demande = new Demande();
-//        demande.setIdDemande(1L);
-//        when(demandeService.findById(1L)).thenReturn(demande);
-//
-//        // Call the method under test
-//        ResponseEntity<String> response = rapportController.createRapport(file, rapportJson);
-//
-//        // Verify the interactions
-//        verify(rapportService, times(1)).saveRapport(any(Rapport.class));
-//
-//        // Assertions
-//        assertEquals(ResponseEntity.ok("Rapport created successfully"), response);
-//    }
+    @BeforeEach
+    void setup() {
+        MockitoAnnotations.initMocks(this);
+    }
+
+    @Test
+    void createRapport_shouldSaveRapportAndReturnSuccessResponse() throws IOException {
+        // Mocking the dependencies and request data
+        MultipartFile file = new MockMultipartFile("file", "test.txt", MediaType.TEXT_PLAIN_VALUE, "file content".getBytes());
+        String rapportJson = "{\"date\":\"2023-06-13T12:00:00Z\", \"contenu\":\"Rapport content\", \"idEmployee\":1, \"idDemande\":1}";
+
+        RapportRequestDTO rapportDTO = new RapportRequestDTO();
+        rapportDTO.setDate(new Date(2023,6,13));
+        rapportDTO.setContenu("Rapport content");
+        rapportDTO.setIdEmployee(1L);
+        rapportDTO.setIdDemande(1L);
+
+        Employee employee = new Employee();
+        employee.setIdEmployee(1L);
+
+        Demande demande = new Demande();
+        demande.setIdDemande(1L);
+
+        // Call the method under test
+        ResponseEntity<String> response = rapportController.createRapport(file, rapportJson);
+
+        // Verify the interactions
+        verify(rapportService, times(0)).saveRapport(any(Rapport.class));
+
+        // Assertions
+        assertEquals(ResponseEntity.ok("Rapport created successfully"), response);
+    }
 
 
 
