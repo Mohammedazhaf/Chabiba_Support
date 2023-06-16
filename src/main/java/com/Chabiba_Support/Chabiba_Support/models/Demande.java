@@ -50,6 +50,7 @@ public class Demande  implements Serializable {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private Type type;
+<<<<<<< Updated upstream
 
 	@CreationTimestamp
 	private LocalDateTime creationDate;
@@ -59,6 +60,17 @@ public class Demande  implements Serializable {
 	)
 	private Client client;
 
+=======
+	private String filePath;
+	@CreationTimestamp
+	private LocalDateTime creationDate;
+	@ManyToOne
+	@JoinColumn(
+			name = "id_client"
+	)
+	private Client client;
+
+>>>>>>> Stashed changes
 	public void setIdClient(Long id){
 		this.client.setIdClient(id);
 	}

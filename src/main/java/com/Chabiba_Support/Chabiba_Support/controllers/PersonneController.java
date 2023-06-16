@@ -5,7 +5,10 @@ import com.Chabiba_Support.Chabiba_Support.services.PersonneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+<<<<<<< Updated upstream
 import org.springframework.security.crypto.password.PasswordEncoder;
+=======
+>>>>>>> Stashed changes
 import org.springframework.web.bind.annotation.*;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -23,8 +26,11 @@ import java.util.Optional;
 @RequestMapping("/personnes")
 public class PersonneController {
 	private final PersonneService personneService;
+<<<<<<< Updated upstream
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+=======
+>>>>>>> Stashed changes
 
 	@Autowired
 	public PersonneController(PersonneService personneService) {
@@ -38,7 +44,11 @@ public class PersonneController {
 	}
 	@GetMapping("/image/{filename}")
 	public ResponseEntity<Resource> getImage(@PathVariable String filename) throws IOException, MalformedURLException {
+<<<<<<< Updated upstream
 		String uploadDirectory = "src/main/uploads/avatars";
+=======
+		String uploadDirectory = System.getProperty("user.dir") + "/uploads/avatars/";
+>>>>>>> Stashed changes
 		Path filePath = Paths.get(uploadDirectory, filename);
 		Resource resource = new UrlResource(filePath.toUri());
 
@@ -50,6 +60,37 @@ public class PersonneController {
 			return ResponseEntity.notFound().build();
 		}
 	}
+<<<<<<< Updated upstream
+=======
+	@GetMapping("/document/{filename}")
+	public ResponseEntity<Resource> getDocument(@PathVariable String filename) throws IOException, MalformedURLException {
+		String uploadDirectory = System.getProperty("user.dir") + "/uploads/documents/";
+		Path filePath = Paths.get(uploadDirectory, filename);
+		Resource resource = new UrlResource(filePath.toUri());
+
+		if (resource.exists()) {
+			return ResponseEntity.ok()
+					.contentType(MediaType.APPLICATION_PDF) // Set the appropriate content type
+					.body(resource);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	@GetMapping("/rapport-document/{filename}")
+	public ResponseEntity<Resource> getRapportDocument(@PathVariable String filename) throws IOException, MalformedURLException {
+		String uploadDirectory = System.getProperty("user.dir") + "/uploads/rapport-documents/";
+		Path filePath = Paths.get(uploadDirectory, filename);
+		Resource resource = new UrlResource(filePath.toUri());
+
+		if (resource.exists()) {
+			return ResponseEntity.ok()
+					.contentType(MediaType.ALL) // Set the appropriate content type
+					.body(resource);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+>>>>>>> Stashed changes
 	@GetMapping("/{id}")
 	public ResponseEntity<Personne> getPersonneById(@PathVariable("id") Long id) {
 		Optional<Personne> personne = personneService.getPersonneById(id);
@@ -66,7 +107,10 @@ public class PersonneController {
 	@PutMapping("/{id}")
 	public ResponseEntity<Personne> updatePersonne(@PathVariable("id") Long id, @RequestBody Personne personne) {
 		personne.setIdPersonne(id);
+<<<<<<< Updated upstream
 		personne.setMotDePasse(passwordEncoder.encode(personne.getMotDePasse()));
+=======
+>>>>>>> Stashed changes
 		Personne updatedPersonne = personneService.updatePersonne(personne);
 		return new ResponseEntity<>(updatedPersonne, HttpStatus.OK);
 	}

@@ -43,7 +43,7 @@ public class AffectationController {
         affectation1.setDelaiDate(affectationDTO.getDelaiDate());
         affectation1.setIdAffectation(null);
         affectationService.saveAffectation(affectation1);
-        return ResponseEntity.ok("The affectation was created");
+        return ResponseEntity.ok("");
     }
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateAffectation(@RequestBody AffectationRequestDTO affectationDTO,@PathVariable(value = "id") long id){

@@ -87,12 +87,20 @@ public class RapportController {
 		//rapport.setDocumentR(file.getBytes());
 		rapport.setIdRapport(null);
 		if (!file.isEmpty()) {
+<<<<<<< Updated upstream
 			String filePath = "src/main/uploads" + file.getOriginalFilename();
+=======
+			String filePath = "C:/Users/issam/Desktop/BackendNew/uploads/" + file.getOriginalFilename();
+>>>>>>> Stashed changes
 			file.transferTo(new File(filePath));
 			rapport.setFilePath(filePath);
 		}
 		rapportService.saveRapport(rapport);
+<<<<<<< Updated upstream
 		return ResponseEntity.ok("Rapport created successfully");
+=======
+		return ResponseEntity.ok("Rapport created succusfully");
+>>>>>>> Stashed changes
 	}
 	@DeleteMapping("/delete/{idRapport}")
 	public ResponseEntity<?> deleteRapport(@PathVariable Long idRapport) {
