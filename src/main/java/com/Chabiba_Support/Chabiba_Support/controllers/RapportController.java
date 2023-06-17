@@ -2,9 +2,7 @@ package com.Chabiba_Support.Chabiba_Support.controllers;
 
 
 import com.Chabiba_Support.Chabiba_Support.exception.RapportNotFoundException;
-import com.Chabiba_Support.Chabiba_Support.models.Demande;
-import com.Chabiba_Support.Chabiba_Support.models.Employee;
-import com.Chabiba_Support.Chabiba_Support.models.Rapport;
+import com.Chabiba_Support.Chabiba_Support.models.*;
 import com.Chabiba_Support.Chabiba_Support.requests.DemandeRequestDTO;
 import com.Chabiba_Support.Chabiba_Support.requests.RapportRequestDTO;
 import com.Chabiba_Support.Chabiba_Support.services.DemandeService;
@@ -21,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 @RestController
@@ -86,10 +85,63 @@ public class RapportController {
 
 		//rapport.setDocumentR(file.getBytes());
 		rapport.setIdRapport(null);
-		if (!file.isEmpty()) {
+		/*if (!file.isEmpty()) {
 			String filePath = "C:/Users/issam/Desktop/BackendNew/uploads/" + file.getOriginalFilename();
 			file.transferTo(new File(filePath));
 			rapport.setFilePath(filePath);
+		}*/
+		MultipartFile f = new MultipartFile() {
+			@Override
+			public String getName() {
+				return null;
+			}
+
+			@Override
+			public String getOriginalFilename() {
+				return null;
+			}
+
+			@Override
+			public String getContentType() {
+				return null;
+			}
+
+			@Override
+			public boolean isEmpty() {
+				return false;
+			}
+
+			@Override
+			public long getSize() {
+				return 0;
+			}
+
+			@Override
+			public byte[] getBytes() throws IOException {
+				return new byte[0];
+			}
+
+			@Override
+			public InputStream getInputStream() throws IOException {
+				return null;
+			}
+
+			@Override
+			public void transferTo(File dest) throws IOException, IllegalStateException {
+
+			}
+		};
+		rapport.setDocumentR(f.getBytes());
+
+		if (!file.isEmpty()) {
+			String uploadsDir = System.getProperty("user.dir") + "/uploads/rapport-documents/";
+			String filePath = uploadsDir + file.getOriginalFilename();
+			File directory = new File(uploadsDir);
+			if (!directory.exists()) {
+				directory.mkdirs();
+			}
+			file.transferTo(new File(filePath));
+			demande.setFilePath("http:/localhost:8080/personnes/document/"+filePath);
 		}
 		rapportService.saveRapport(rapport);
 		return ResponseEntity.ok("Rapport created succusfully");

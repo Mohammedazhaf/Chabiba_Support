@@ -1,186 +1,411 @@
-//package com.Chabiba_Support.Chabiba_Support.controllers;
-//
-//import com.Chabiba_Support.Chabiba_Support.models.*;
-//import com.Chabiba_Support.Chabiba_Support.requests.RapportRequestDTO;
-//import com.Chabiba_Support.Chabiba_Support.services.DemandeService;
-//import com.Chabiba_Support.Chabiba_Support.services.EmployeeService;
-//import com.Chabiba_Support.Chabiba_Support.services.RapportService;
-//import com.fasterxml.jackson.databind.ObjectMapper;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.mockito.Mock;
-//import org.mockito.MockitoAnnotations;
-//import org.modelmapper.ModelMapper;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.http.MediaType;
-//import org.springframework.mock.web.MockMultipartFile;
-//import org.springframework.test.web.servlet.MockMvc;
-//import org.springframework.test.web.servlet.MvcResult;
-//import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-//import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-//
-//import java.sql.Date;
-//import java.time.LocalDate;
-//import java.util.Arrays;
-//import java.util.List;
-//
-//import static org.assertj.core.api.Assertions.assertThat;
-//import static org.mockito.ArgumentMatchers.any;
-//import static org.mockito.Mockito.*;
-//
-//@SpringBootTest
-//@AutoConfigureMockMvc
-//public class RapportControllerTest {
-//
-//    @Autowired
-//    private MockMvc mockMvc;
-//
-//    @Mock
-//    private RapportService rapportService;
-//
-//    @Mock
-//    private EmployeeService employeeService;
-//
-//    @Mock
-//    private DemandeService demandeService;
-//
-//    @Autowired
-//    private ModelMapper modelMapper;
-//
-//    @BeforeEach
-//    public void setup() {
-//        MockitoAnnotations.openMocks(this);
-//    }
-//
+package com.Chabiba_Support.Chabiba_Support.controllers;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
+
+import com.Chabiba_Support.Chabiba_Support.exception.RapportNotFoundException;
+import com.Chabiba_Support.Chabiba_Support.models.Demande;
+import com.Chabiba_Support.Chabiba_Support.models.Employee;
+import com.Chabiba_Support.Chabiba_Support.models.Rapport;
+import com.Chabiba_Support.Chabiba_Support.repositories.ClientRepository;
+import com.Chabiba_Support.Chabiba_Support.repositories.DemandeRepository;
+import com.Chabiba_Support.Chabiba_Support.repositories.EmployeeRepository;
+import com.Chabiba_Support.Chabiba_Support.repositories.PersonneRepository;
+import com.Chabiba_Support.Chabiba_Support.requests.RapportRequestDTO;
+import com.Chabiba_Support.Chabiba_Support.services.DemandeService;
+import com.Chabiba_Support.Chabiba_Support.services.EmployeeService;
+import com.Chabiba_Support.Chabiba_Support.services.RapportService;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
+@ExtendWith(MockitoExtension.class)
+class RapportControllerTest {
+
+
+    @Mock
+    private RapportService rapportService;
+    @Mock
+    private EmployeeService employeeService;
+    @Mock
+    private DemandeService demandeService;
+
+    @InjectMocks
+    private RapportController rapportController;
+
+    @BeforeEach
+    void setup() {
+        MockitoAnnotations.initMocks(this);
+    }
+
+    @Test
+    void createRapport_shouldSaveRapportAndReturnSuccessResponse() throws IOException {
+        // Mocking the dependencies and request data
+        MultipartFile file = new MockMultipartFile("file", "test.txt", MediaType.TEXT_PLAIN_VALUE, "file content".getBytes());
+        String rapportJson = "{\"date\":\"2023-06-13T12:00:00Z\", \"contenu\":\"Rapport content\", \"idEmployee\":1, \"idDemande\":1}";
+
+        RapportRequestDTO rapportDTO = new RapportRequestDTO();
+        rapportDTO.setDate(new Date(2023,6,13));
+        rapportDTO.setContenu("Rapport content");
+        rapportDTO.setIdEmployee(1L);
+        rapportDTO.setIdDemande(1L);
+
+        Employee employee = new Employee();
+        employee.setIdEmployee(1L);
+
+        Demande demande = new Demande();
+        demande.setIdDemande(1L);
+
+        // Call the method under test
+        ResponseEntity<String> response = rapportController.createRapport(file, rapportJson);
+
+        // Verify the interactions
+        verify(rapportService, times(0)).saveRapport(any(Rapport.class));
+
+        // Assertions
+        assertEquals(ResponseEntity.ok("Rapport created successfully"), response);
+    }
+
+
+
+
+    /**
+     * Method under test: {@link RapportController#getAllRapports()}
+     */
+    @Test
+    void testGetAllRapports2() {
+        //   Diffblue Cover was unable to write a Spring test,
+        //   so wrote a non-Spring test instead.
+        //   Diffblue AI was unable to find a test
+
+        RapportService rapportService = mock(RapportService.class);
+        ArrayList<Rapport> rapportList = new ArrayList<>();
+        when(rapportService.getAllRapports()).thenReturn(rapportList);
+        ModelMapper modelMapper = new ModelMapper();
+        DemandeService demandeService = new DemandeService(mock(DemandeRepository.class), mock(PersonneRepository.class),
+                mock(ClientRepository.class));
+
+        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
+        PersonneRepository personneRepository = mock(PersonneRepository.class);
+        List<Rapport> actualAllRapports = (new RapportController(rapportService, modelMapper, demandeService,
+                new EmployeeService(employeeRepository, personneRepository, new BCryptPasswordEncoder()))).getAllRapports();
+        assertSame(rapportList, actualAllRapports);
+        assertTrue(actualAllRapports.isEmpty());
+        verify(rapportService).getAllRapports();
+    }
+
+    /**
+     * Method under test: {@link RapportController#getRapportsByDemandeId(Long)}
+     */
+    @Test
+    void testGetRapportsByDemandeId2() throws RapportNotFoundException {
+        //   Diffblue Cover was unable to write a Spring test,
+        //   so wrote a non-Spring test instead.
+        //   Diffblue AI was unable to find a test
+
+        RapportService rapportService = mock(RapportService.class);
+        ArrayList<Rapport> rapportList = new ArrayList<>();
+        when(rapportService.getRapportsByDemandeId((Long) any())).thenReturn(rapportList);
+        ModelMapper modelMapper = new ModelMapper();
+        DemandeService demandeService = new DemandeService(mock(DemandeRepository.class), mock(PersonneRepository.class),
+                mock(ClientRepository.class));
+
+        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
+        PersonneRepository personneRepository = mock(PersonneRepository.class);
+        List<Rapport> actualRapportsByDemandeId = (new RapportController(rapportService, modelMapper, demandeService,
+                new EmployeeService(employeeRepository, personneRepository, new BCryptPasswordEncoder())))
+                .getRapportsByDemandeId(1L);
+        assertSame(rapportList, actualRapportsByDemandeId);
+        assertTrue(actualRapportsByDemandeId.isEmpty());
+        verify(rapportService).getRapportsByDemandeId((Long) any());
+    }
+
+    /**
+     * Method under test: {@link RapportController#getRapportByIdRapport(Long)}
+     */
+    @Test
+    void testGetRapportByIdRapport2() {
+        //   Diffblue Cover was unable to write a Spring test,
+        //   so wrote a non-Spring test instead.
+        //   Diffblue AI was unable to find a test
+
+        RapportService rapportService = mock(RapportService.class);
+        Rapport rapport = new Rapport();
+        when(rapportService.getRapportByIdRapport((Long) any())).thenReturn(rapport);
+        ModelMapper modelMapper = new ModelMapper();
+        DemandeService demandeService = new DemandeService(mock(DemandeRepository.class), mock(PersonneRepository.class),
+                mock(ClientRepository.class));
+
+        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
+        PersonneRepository personneRepository = mock(PersonneRepository.class);
+        assertSame(rapport,
+                (new RapportController(rapportService, modelMapper, demandeService,
+                        new EmployeeService(employeeRepository, personneRepository, new BCryptPasswordEncoder())))
+                        .getRapportByIdRapport(1L));
+        verify(rapportService).getRapportByIdRapport((Long) any());
+    }
+
+//    /**
+//     * Method under test: {@link RapportController#createRapport(MultipartFile, String)}
+//     */
 //    @Test
-//    public void testGetAllRapports() throws Exception {
-//        // Mock the RapportService's getAllRapports method
-//        List<Rapport> mockRapports = Arrays.asList(new Rapport(), new Rapport());
-//        when(rapportService.getAllRapports()).thenReturn(mockRapports);
+//    void testCreateRapport() throws IOException {
+//        // TODO: Complete this test.
+//        //   Diffblue AI was unable to find a test
 //
-//        // Perform the GET request
-//        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/rapport/all"))
-//                .andExpect(MockMvcResultMatchers.status().isOk())
-//                .andReturn();
+//        RapportService rapportService = new RapportService();
+//        ModelMapper modelMapper = new ModelMapper();
+//        DemandeService demandeService = new DemandeService(mock(DemandeRepository.class), mock(PersonneRepository.class),
+//                mock(ClientRepository.class));
 //
-//        // Extract the response body and convert it to a list of Rapport objects
-//        String responseBody = mvcResult.getResponse().getContentAsString();
-//        List<Rapport> responseRapports = new ObjectMapper().readValue(responseBody, List.class);
-//
-//        // Assert that the response contains the expected number of Rapport objects
-//        assertThat(responseRapports).hasSize(mockRapports.size());
+//        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
+//        PersonneRepository personneRepository = mock(PersonneRepository.class);
+//        RapportController rapportController = new RapportController(rapportService, modelMapper, demandeService,
+//                new EmployeeService(employeeRepository, personneRepository, new BCryptPasswordEncoder()));
+//        rapportController.createRapport(
+//                new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"))), "Rapport Json");
 //    }
 //
-////    @Test
-////    public void testCreateRapport() throws Exception {
-////        // Mock the dependencies
-////        when(rapportService.saveRapport(any())).thenReturn(new Rapport());
-////        when(employeeService.findEmployeeById(any())).thenReturn(new Employee());
-////        when(demandeService.findById(any())).thenReturn(new Demande());
-////
-////        // Create a RapportRequestDTO
-////        RapportRequestDTO rapportRequestDTO = new RapportRequestDTO();
-////        rapportRequestDTO.setDate(new Date(2023,2,6));
-////        rapportRequestDTO.setContenu("Test Rapport");
-////        rapportRequestDTO.setIdEmployee(1L);
-////        rapportRequestDTO.setIdDemande(1L);
-////
-////        // Create a sample file
-////        MockMultipartFile file = new MockMultipartFile(
-////                "file",
-////                "test.txt",
-////                MediaType.TEXT_PLAIN_VALUE,
-////                "Hello, World!".getBytes()
-////        );
-////
-////        // Convert RapportRequestDTO to JSON
-////        String rapportJson = new ObjectMapper().writeValueAsString(rapportRequestDTO);
-////
-////        // Perform the POST request
-////        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.multipart("/api/rapport/add")
-////                        .file(file)
-////                        .param("rapport", rapportJson))
-////                .andExpect(MockMvcResultMatchers.status().isOk())
-////                .andReturn();
-////
-////        // Assert the response
-////        String response = mvcResult.getResponse().getContentAsString();
-////        assertThat(response).isEqualTo("Rapport created successfully");
-////
-////        // Verify that the saveRapport method was called
-////        verify(rapportService, times(1)).saveRapport(any());
-////    }
-//
+//    /**
+//     * Method under test: {@link RapportController#createRapport(MultipartFile, String)}
+//     */
 //    @Test
-//    public void testDeleteRapport() throws Exception {
+//    void testCreateRapport2() throws IOException {
+//        // TODO: Complete this test.
+//        //   Diffblue AI was unable to find a test
 //
-//        // Create a rapport with ID 1L and insert it into the database
-//        Rapport rapport = new Rapport();
-//        rapport.setIdRapport(1L);
-//        rapport.setContenu("Rapport content");
-//        rapport.setDate(new Date(2023,6,1));
-//        Employee employee = new Employee();
-//        employee.setIdEmployee(1L);
-//        employee.setCin("FA21232");
-//        Personne personne = new Personne(1L,"personne","personne","2131","email@email.com","motdepasse", Role.Responsable);
-//        employee.setPersonne(personne);
-//        Client client = new Client(1L,"Entreprise",personne);
-//        Demande demande = new Demande(1L,ResponseResponsable.pending,false,new Date(2023,6,1),"titre",Etat.EnCours,Service.Developpement,"100","message",Type.Urgent,client);
+//        RapportService rapportService = new RapportService();
+//        ModelMapper modelMapper = new ModelMapper();
+//        DemandeService demandeService = new DemandeService(mock(DemandeRepository.class), mock(PersonneRepository.class),
+//                mock(ClientRepository.class));
 //
-//
-//        rapport.setEmployee(employee);
-//        rapport.setDemande(demande);
-//
-//        rapportService.saveRapport(rapport);
-//
-//        // Perform the DELETE request
-//        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/rapport/delete/{idRapport}", 1L))
-//                .andExpect(MockMvcResultMatchers.status().isOk())
-//                .andReturn();
-//
-//        // Assert the response
-//        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(200);
-//
-//        // Verify that the deleteRapport method was called
-//        verify(rapportService, times(1)).deleteRapport(1L);
+//        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
+//        PersonneRepository personneRepository = mock(PersonneRepository.class);
+//        RapportController rapportController = new RapportController(rapportService, modelMapper, demandeService,
+//                new EmployeeService(employeeRepository, personneRepository, new BCryptPasswordEncoder()));
+//        rapportController
+//                .createRapport(new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"))), null);
 //    }
 //
-////    @Test
-////    public void testUpdateRapport() throws Exception {
-////        // Mock the dependencies
-////        when(rapportService.getRapportByIdRapport(any())).thenReturn(new Rapport());
-////
-////        // Create a RapportRequestDTO
-////        RapportRequestDTO rapportRequestDTO = new RapportRequestDTO();
-////        rapportRequestDTO.setDate(new Date(2023,6,1));
-////        rapportRequestDTO.setContenu("Updated Rapport");
-////
-////        // Create a sample file
-////        MockMultipartFile file = new MockMultipartFile(
-////                "file",
-////                "test.txt",
-////                MediaType.TEXT_PLAIN_VALUE,
-////                "Hello, Updated World!".getBytes()
-////        );
-////
-////        // Convert RapportRequestDTO to JSON
-////        String rapportJson = new ObjectMapper().writeValueAsString(rapportRequestDTO);
-////
-////        // Perform the PUT request
-////        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.multipart("/api/rapport/update/{id}", 1L)
-////                        .file(file)
-////                        .param("rapport", rapportJson))
-////                .andExpect(MockMvcResultMatchers.status().isOk())
-////                .andReturn();
-////
-////        // Assert the response
-////        String response = mvcResult.getResponse().getContentAsString();
-////        assertThat(response).isEqualTo("Demande updated successfully");
-////
-////        // Verify that the getRapportByIdRapport and saveRapport methods were called
-////        verify(rapportService, times(1)).getRapportByIdRapport(1L);
-////        verify(rapportService, times(1)).saveRapport(any());
-////    }
-//}
+//    /**
+//     * Method under test: {@link RapportController#createRapport(MultipartFile, String)}
+//     */
+//    @Test
+//    void testCreateRapport3() throws IOException {
+//        // TODO: Complete this test.
+//        //   Diffblue AI was unable to find a test
+//
+//        RapportService rapportService = new RapportService();
+//        ModelMapper modelMapper = new ModelMapper();
+//        DemandeService demandeService = new DemandeService(mock(DemandeRepository.class), mock(PersonneRepository.class),
+//                mock(ClientRepository.class));
+//
+//        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
+//        PersonneRepository personneRepository = mock(PersonneRepository.class);
+//        RapportController rapportController = new RapportController(rapportService, modelMapper, demandeService,
+//                new EmployeeService(employeeRepository, personneRepository, new BCryptPasswordEncoder()));
+//        rapportController
+//                .createRapport(new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"))), "foo");
+//    }
+
+//    /**
+//     * Method under test: {@link RapportController#createRapport(MultipartFile, String)}
+//     */
+//    @Test
+//    void testCreateRapport4() throws IOException {
+//        // TODO: Complete this test.
+//        //   Diffblue AI was unable to find a test
+//
+//        RapportService rapportService = new RapportService();
+//        ModelMapper modelMapper = new ModelMapper();
+//        DemandeService demandeService = new DemandeService(mock(DemandeRepository.class), mock(PersonneRepository.class),
+//                mock(ClientRepository.class));
+//
+//        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
+//        PersonneRepository personneRepository = mock(PersonneRepository.class);
+//        RapportController rapportController = new RapportController(rapportService, modelMapper, demandeService,
+//                new EmployeeService(employeeRepository, personneRepository, new BCryptPasswordEncoder()));
+//        rapportController
+//                .createRapport(new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"))), "42");
+//    }
+
+//    /**
+//     * Method under test: {@link RapportController#createRapport(MultipartFile, String)}
+//     */
+//    @Test
+//    void testCreateRapport5() throws IOException {
+//        // TODO: Complete this test.
+//        //   Diffblue AI was unable to find a test
+//
+//        RapportService rapportService = new RapportService();
+//        ModelMapper modelMapper = new ModelMapper();
+//        DemandeService demandeService = new DemandeService(mock(DemandeRepository.class), mock(PersonneRepository.class),
+//                mock(ClientRepository.class));
+//
+//        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
+//        PersonneRepository personneRepository = mock(PersonneRepository.class);
+//        RapportController rapportController = new RapportController(rapportService, modelMapper, demandeService,
+//                new EmployeeService(employeeRepository, personneRepository, new BCryptPasswordEncoder()));
+//        rapportController
+//                .createRapport(new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"))), "");
+//    }
+
+
+    /**
+     * Method under test: {@link RapportController#deleteRapport(Long)}
+     */
+    @Test
+    void testDeleteRapport2() {
+        //   Diffblue Cover was unable to write a Spring test,
+        //   so wrote a non-Spring test instead.
+        //   Diffblue AI was unable to find a test
+
+        RapportService rapportService = mock(RapportService.class);
+        doNothing().when(rapportService).deleteRapport((Long) any());
+        ModelMapper modelMapper = new ModelMapper();
+        DemandeService demandeService = new DemandeService(mock(DemandeRepository.class), mock(PersonneRepository.class),
+                mock(ClientRepository.class));
+
+        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
+        PersonneRepository personneRepository = mock(PersonneRepository.class);
+        ResponseEntity<?> actualDeleteRapportResult = (new RapportController(rapportService, modelMapper, demandeService,
+                new EmployeeService(employeeRepository, personneRepository, new BCryptPasswordEncoder()))).deleteRapport(1L);
+        assertNull(actualDeleteRapportResult.getBody());
+        assertEquals(200, actualDeleteRapportResult.getStatusCodeValue());
+        assertTrue(actualDeleteRapportResult.getHeaders().isEmpty());
+        verify(rapportService).deleteRapport((Long) any());
+    }
+
+    /**
+     * Method under test: {@link RapportController#deleteRapport(Long)}
+     */
+    @Test
+    void testDeleteRapport3() {
+        //   Diffblue Cover was unable to write a Spring test,
+        //   so wrote a non-Spring test instead.
+        //   Diffblue AI was unable to find a test
+
+        RapportService rapportService = mock(RapportService.class);
+        doThrow(new RapportNotFoundException("An error occurred")).when(rapportService).deleteRapport((Long) any());
+        ModelMapper modelMapper = new ModelMapper();
+        DemandeService demandeService = new DemandeService(mock(DemandeRepository.class), mock(PersonneRepository.class),
+                mock(ClientRepository.class));
+
+        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
+        PersonneRepository personneRepository = mock(PersonneRepository.class);
+        ResponseEntity<?> actualDeleteRapportResult = (new RapportController(rapportService, modelMapper, demandeService,
+                new EmployeeService(employeeRepository, personneRepository, new BCryptPasswordEncoder()))).deleteRapport(1L);
+        assertNull(actualDeleteRapportResult.getBody());
+        assertEquals(404, actualDeleteRapportResult.getStatusCodeValue());
+        assertTrue(actualDeleteRapportResult.getHeaders().isEmpty());
+        verify(rapportService).deleteRapport((Long) any());
+    }
+
+//    /**
+//     * Method under test: {@link RapportController#updateRapport(MultipartFile, String, long)}
+//     */
+//    @Test
+//    void testUpdateRapport() throws IOException {
+//        // TODO: Complete this test.
+//        //   Diffblue AI was unable to find a test
+//
+//        RapportService rapportService = new RapportService();
+//        ModelMapper modelMapper = new ModelMapper();
+//        DemandeService demandeService = new DemandeService(mock(DemandeRepository.class), mock(PersonneRepository.class),
+//                mock(ClientRepository.class));
+//
+//        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
+//        PersonneRepository personneRepository = mock(PersonneRepository.class);
+//        RapportController rapportController = new RapportController(rapportService, modelMapper, demandeService,
+//                new EmployeeService(employeeRepository, personneRepository, new BCryptPasswordEncoder()));
+//        rapportController.updateRapport(
+//                new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"))), "Rapport Json", 1L);
+//    }
+
+//    /**
+//     * Method under test: {@link RapportController#updateRapport(MultipartFile, String, long)}
+//     */
+//    @Test
+//    void testUpdateRapport2() throws IOException {
+//        // TODO: Complete this test.
+//        //   Diffblue AI was unable to find a test
+//
+//        RapportService rapportService = mock(RapportService.class);
+//        when(rapportService.getRapportByIdRapport((Long) any())).thenReturn(new Rapport());
+//        ModelMapper modelMapper = new ModelMapper();
+//        DemandeService demandeService = new DemandeService(mock(DemandeRepository.class), mock(PersonneRepository.class),
+//                mock(ClientRepository.class));
+//
+//        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
+//        PersonneRepository personneRepository = mock(PersonneRepository.class);
+//        RapportController rapportController = new RapportController(rapportService, modelMapper, demandeService,
+//                new EmployeeService(employeeRepository, personneRepository, new BCryptPasswordEncoder()));
+//        rapportController.updateRapport(
+//                new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"))), "Rapport Json", 1L);
+//    }
+
+//    /**
+//     * Method under test: {@link RapportController#updateRapport(MultipartFile, String, long)}
+//     */
+//    @Test
+//    void testUpdateRapport3() throws IOException {
+//        // TODO: Complete this test.
+//        //   Diffblue AI was unable to find a test
+//
+//        RapportService rapportService = mock(RapportService.class);
+//        when(rapportService.getRapportByIdRapport((Long) any())).thenReturn(new Rapport());
+//        ModelMapper modelMapper = new ModelMapper();
+//        DemandeService demandeService = new DemandeService(mock(DemandeRepository.class), mock(PersonneRepository.class),
+//                mock(ClientRepository.class));
+//
+//        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
+//        PersonneRepository personneRepository = mock(PersonneRepository.class);
+//        RapportController rapportController = new RapportController(rapportService, modelMapper, demandeService,
+//                new EmployeeService(employeeRepository, personneRepository, new BCryptPasswordEncoder()));
+//        rapportController.updateRapport(
+//                new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"))), "42", 1L);
+//    }
+
+    /**
+     * Method under test: {@link RapportController#updateRapport(MultipartFile, String, long)}
+     */
+//    @Test
+//    void testUpdateRapport4() throws IOException {
+//        // TODO: Complete this test.
+//        //   Diffblue AI was unable to find a test
+//
+//        RapportService rapportService = mock(RapportService.class);
+//        when(rapportService.getRapportByIdRapport((Long) any())).thenReturn(new Rapport());
+//        ModelMapper modelMapper = new ModelMapper();
+//        DemandeService demandeService = new DemandeService(mock(DemandeRepository.class), mock(PersonneRepository.class),
+//                mock(ClientRepository.class));
+//
+//        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
+//        PersonneRepository personneRepository = mock(PersonneRepository.class);
+//        RapportController rapportController = new RapportController(rapportService, modelMapper, demandeService,
+//                new EmployeeService(employeeRepository, personneRepository, new BCryptPasswordEncoder()));
+//        rapportController
+//                .updateRapport(new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"))), "", 1L);
+//    }
+}
+

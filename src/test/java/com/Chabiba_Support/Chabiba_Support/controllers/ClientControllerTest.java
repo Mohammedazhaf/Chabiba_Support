@@ -94,7 +94,7 @@ class ClientControllerTest {
         // Reset the RequestContextHolder
         RequestContextHolder.resetRequestAttributes();
     }
-    
+
 
     /**
      * Method under test: {@link ClientController#getClientBYIdPersonne(Long)}
