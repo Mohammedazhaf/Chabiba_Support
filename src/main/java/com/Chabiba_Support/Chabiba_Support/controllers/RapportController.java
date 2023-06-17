@@ -141,7 +141,7 @@ public class RapportController {
                 directory.mkdirs();
             }
             file.transferTo(new File(filePath));
-            demande.setFilePath("http:/localhost:8080/personnes/document/"+filePath);
+            rapport.setFilePath("http:/localhost:8080/personnes/document/"+file.getOriginalFilename());
         }
         rapportService.saveRapport(rapport);
         return ResponseEntity.ok("Rapport created succusfully");
